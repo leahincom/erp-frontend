@@ -28,7 +28,7 @@ const reducer = (state: STATETYPE, action: ACTIONTYPE): STATETYPE => {
 };
 
 export interface UserProviderProps {
-  children: Element;
+  children: any;
   isAuthenticated: boolean;
 }
 
