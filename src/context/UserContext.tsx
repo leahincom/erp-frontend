@@ -1,6 +1,6 @@
 import { createContext, useReducer, useEffect } from 'react';
 
-export const UserStateContext = createContext({});
+export const UserStateContext = createContext({ isAuth: false });
 export const UserDispatchContext = createContext({});
 
 type STATETYPE = {

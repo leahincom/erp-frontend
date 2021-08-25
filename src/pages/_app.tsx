@@ -5,7 +5,7 @@ import type { AppProps } from 'next/app';
 import Layout from '../components/Layout';
 import UserProvider from '../context/UserContext';
 
-import '../styles/global.scss';
+import '../styles/initializeStyle.ts';
 import 'fontsource-nunito-sans';
 import 'fontsource-roboto';
 
