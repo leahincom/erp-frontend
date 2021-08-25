@@ -3,6 +3,7 @@
   "rules": {
     "react/react-in-jsx-scope": "off",
     "@typescript-eslint/no-shadow": "off",
+    "quote-props": [1, "as-needed"],
     "import/order": [
       "error",
       {
