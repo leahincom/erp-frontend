@@ -17,3 +17,5 @@ const styleVariables = css`
       rgba(15, 15, 15, 0.2) 0px 9px 24px;
   }
 `;
+
+export default styleVariables;
