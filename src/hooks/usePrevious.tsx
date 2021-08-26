@@ -1,7 +1,15 @@
-import React from 'react';
+import { useRef, useEffect } from 'react';
 
-const usePrevious = () => {
-  return <div></div>;
+import { BlockType } from '../components/EditablePage';
+
+const usePrevious = (value: BlockType[]) => {
+  const ref = useRef([{}]);
+
+  useEffect(() => {
+    ref.current = value;
+  });
+
+  return ref.current;
 };
 
 export default usePrevious;
