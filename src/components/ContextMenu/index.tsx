@@ -72,7 +72,7 @@ type ItemType = {
 interface ContextMenuProps {
   menuItems: ItemType[];
   closeAction: () => void;
-  isTopNavigation: boolean;
+  isTopNavigation?: boolean;
 }
 
 const ContextMenu = ({ menuItems, closeAction, isTopNavigation = false }: ContextMenuProps) => {

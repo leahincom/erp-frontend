@@ -4,7 +4,6 @@ import { useRouter } from 'next/router';
 import { useContext, useState } from 'react';
 import styled from 'styled-components';
 
-import { UserIcon, GithubIcon } from '../../assets/icons';
 import { UserStateContext } from '../../context/UserContext';
 import Button from '../Button/';
 import ContextMenu from '../ContextMenu';
@@ -16,15 +15,15 @@ const HeaderBarWrapper = styled.header`
   justify-content: space-between;
   margin: 1rem;
   border-radius: 0.5rem;
-  background: $secondary;
+  background: var(--secondary);
   padding: 1rem;
   width: calc(100% - 2rem);
-  max-width: $max-width;
+  max-width: var(--max-width);
 `;
 
 const LogoWrapper = styled.div`
-  color: $primary;
-  font-family: $accent;
+  color: var(--primary);
+  font-family: var(--accent);
   font-size: 1.5rem;
   font-weight: 700;
 `;
@@ -33,7 +32,7 @@ const ContentWrapper = styled.main`
   margin: 0;
   padding: 1rem 0 1rem 1rem;
   width: 100%;
-  max-width: $max-width;
+  max-width: var(--max-width);
 `;
 
 const FooterWrapper = styled.footer`
@@ -43,13 +42,13 @@ const FooterWrapper = styled.footer`
   justify-content: space-between;
   margin: 1rem;
   width: calc(100% - 2rem);
-  max-width: $max-width;
+  max-width: var(--max-width);
 `;
 
 const HrWrapper = styled.hr`
   display: block;
   border: 0;
-  border-top: 1px solid $tertiary;
+  border-top: 1px solid var(--tertiary);
   width: 100%;
   height: 1px;
 `;
@@ -91,7 +90,7 @@ const UserWrapper = styled.div`
 `;
 
 type ChildrenType = {
-  children: any;
+  children: React.Component[];
 };
 
 const Layout = ({ children }: ChildrenType) => {
@@ -124,16 +123,16 @@ const Layout = ({ children }: ChildrenType) => {
       </Head>
       <HeaderBarWrapper>
         <LogoWrapper>
-          <Link href='/'>
+          <a href='/' role='link'>
             notion<span style={{ fontSize: '1.25rem' }}>.clone</span>
-          </Link>
+          </a>
         </LogoWrapper>
         <NavWrapper>
           {!isLoginPage && !isAuth && <Button href='/login'>Login</Button>}
           {!isLoginPage && isAuth && (
             <UserWrapper>
               <span role='button' tabIndex={0} onClick={() => toggleContextMenu()}>
-                <img src={UserIcon} alt='User Icon' />
+                <img src='../../assets/icons/User.svg' alt='User Icon' />
               </span>
             </UserWrapper>
           )}
@@ -167,7 +166,7 @@ const Layout = ({ children }: ChildrenType) => {
         <HrWrapper />
         <GitHubWrapper>
           <Link href='https://github.com/konstantinmuenster/notion-clone' passHref>
-            <img src={GithubIcon} alt='Github Icon' />
+            <img src='../../assets/icons/Github.svg' alt='Github Icon' />
           </Link>
         </GitHubWrapper>
       </FooterWrapper>
