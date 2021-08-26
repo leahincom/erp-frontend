@@ -1,15 +1,17 @@
-import { createContext, useReducer, useEffect } from 'react';
+import { createContext, useReducer, useEffect, Dispatch } from 'react';
 
 export const UserStateContext = createContext({ isAuth: false });
-export const UserDispatchContext = createContext({});
+export const UserDispatchContext = createContext<DispatchType>(() => null);
 
-type STATETYPE = {
+type StateType = {
   isAuth: boolean;
 };
 
-type ACTIONTYPE = { type: 'LOGIN' } | { type: 'LOGOUT' };
+type ActionType = { type: 'LOGIN' } | { type: 'LOGOUT' };
 
-const reducer = (state: STATETYPE, action: ACTIONTYPE): STATETYPE => {
+type DispatchType = Dispatch<ActionType>;
+
+const reducer = (state: StateType, action: ActionType): StateType => {
   switch (action.type) {
     case 'LOGIN': {
       return {
