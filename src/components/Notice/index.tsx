@@ -32,7 +32,7 @@ const NoticeWrapper = styled.div`
   }
 `;
 
-const DismissWrapper = styled.span`
+const DismissWrapper = styled.div`
   display: flex;
   position: absolute;
   top: 0.5rem;
@@ -41,14 +41,16 @@ const DismissWrapper = styled.span`
   justify-content: center;
   width: 2.5rem;
   height: 2.5rem;
-  img {
+
+  > img {
     width: 100%;
     max-width: 1rem;
     height: 100%;
     max-height: 1rem;
-  }
-  :hover {
-    cursor: pointer;
+
+    :hover {
+      cursor: pointer;
+    }
   }
 `;
 
@@ -67,10 +69,10 @@ const Notice = ({ children, status, mini, dismissible, style }: NoticeProps) => 
     <NoticeWrapper
       style={{ ...style }}
       className={[
-        isVisible !== true ? 'notDisplayed' : null,
-        status === 'SUCCESS' ? 'successNotice' : null,
-        status === 'ERROR' ? 'errorNotice' : null,
-        mini ? 'miniNotice' : null,
+        isVisible !== true && 'notDisplayed',
+        status === 'SUCCESS' && 'successNotice',
+        status === 'ERROR' && 'errorNotice',
+        mini && 'miniNotice',
       ].join(' ')}
     >
       {dismissible && (

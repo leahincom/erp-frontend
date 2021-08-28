@@ -4,13 +4,13 @@ import styled from 'styled-components';
 const ButtonWrapper = styled.a`
   display: inline-block;
   border-radius: 0.5rem;
-  background: $primary;
+  background: var(--primary);
   padding: 0.4rem 1rem;
   width: auto;
   min-width: 5rem;
   text-align: center;
   color: white;
-  font-family: $accent;
+  font-family: var(--accent);
   font-weight: 700;
 `;
 

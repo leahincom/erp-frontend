@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import styled from 'styled-components';
 
 import { useOnClickOutside } from '../../hooks/';
+import { ItemType, PositionType } from '../../types/';
 
 const MenuBarWrapper = styled.div<{ ref: any }>`
   display: flex;
@@ -21,7 +22,7 @@ const MenuWrapper = styled.div`
   background: white;
 `;
 
-const ItemWrapper = styled.div`
+const ItemWrapper = styled.button`
   border-bottom: 1px solid var(--secondary);
   padding: 0.5rem 1rem;
   font-family: var(--accent);
@@ -56,19 +57,6 @@ const SelectedTagWrapper = styled.div`
   background: var(--tertiary);
 `;
 
-type PositionType = {
-  top?: string;
-  bottom?: string;
-  left?: string;
-  right?: string;
-};
-
-type ItemType = {
-  id: string;
-  label: string;
-  action: () => void;
-};
-
 interface ContextMenuProps {
   menuItems: ItemType[];
   closeAction: () => void;
@@ -76,7 +64,7 @@ interface ContextMenuProps {
 }
 
 const ContextMenu = ({ menuItems, closeAction, isTopNavigation = false }: ContextMenuProps) => {
-  const ref = useRef();
+  const ref = useRef<HTMLDivElement>(null);
 
   useOnClickOutside(ref, closeAction);
 
@@ -90,7 +78,7 @@ const ContextMenu = ({ menuItems, closeAction, isTopNavigation = false }: Contex
       <MenuWrapper>
         {menuItems.map((item: ItemType, key: number) => {
           return (
-            <ItemWrapper role='button' key={key} tabIndex={0} onClick={item.action}>
+            <ItemWrapper key={key} tabIndex={0} onClick={item.action}>
               {item.label}
             </ItemWrapper>
           );

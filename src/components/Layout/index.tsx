@@ -21,7 +21,7 @@ const HeaderBarWrapper = styled.header`
   max-width: var(--max-width);
 `;
 
-const LogoWrapper = styled.div`
+const LogoWrapper = styled.a`
   color: var(--primary);
   font-family: var(--accent);
   font-size: 1.5rem;
@@ -53,19 +53,19 @@ const HrWrapper = styled.hr`
   height: 1px;
 `;
 
-const GitHubWrapper = styled.div`
+const GitHubWrapper = styled.a`
   margin-left: 1rem;
   width: auto;
   height: auto;
 
-  img {
+  > img {
     opacity: 0.75;
     width: 1.5rem;
     height: 1.5rem;
-  }
 
-  img:hover {
-    opacity: 1;
+    :hover {
+      opacity: 1;
+    }
   }
 `;
 
@@ -77,20 +77,20 @@ const UserWrapper = styled.div`
   width: auto;
   height: auto;
 
-  img {
+  > img {
     margin: 0.125rem 0.125rem 0 0;
     width: 1.6rem;
     height: 1.6rem;
-  }
 
-  img:hover,
-  img:focus {
-    cursor: pointer;
+    :hover,
+    :focus {
+      cursor: pointer;
+    }
   }
 `;
 
 type ChildrenType = {
-  children: React.Component[];
+  children: any;
 };
 
 const Layout = ({ children }: ChildrenType) => {
@@ -122,11 +122,7 @@ const Layout = ({ children }: ChildrenType) => {
         <link rel='icon' href='/favicon.ico' type='image/x-icon' />
       </Head>
       <HeaderBarWrapper>
-        <LogoWrapper>
-          <a href='/' role='link'>
-            notion<span style={{ fontSize: '1.25rem' }}>.clone</span>
-          </a>
-        </LogoWrapper>
+        <LogoWrapper href='/'>notion.clone</LogoWrapper>
         <NavWrapper>
           {!isLoginPage && !isAuth && <Button href='/login'>Login</Button>}
           {!isLoginPage && isAuth && (
@@ -164,10 +160,8 @@ const Layout = ({ children }: ChildrenType) => {
       <ContentWrapper>{children}</ContentWrapper>
       <FooterWrapper>
         <HrWrapper />
-        <GitHubWrapper>
-          <Link href='https://github.com/konstantinmuenster/notion-clone' passHref>
-            <img src='../../assets/icons/Github.svg' alt='Github Icon' />
-          </Link>
+        <GitHubWrapper href='https://github.com/konstantinmuenster/notion-clone'>
+          <img src='../../assets/icons/Github.svg' alt='Github Icon' />
         </GitHubWrapper>
       </FooterWrapper>
     </div>

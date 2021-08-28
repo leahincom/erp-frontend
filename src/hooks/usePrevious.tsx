@@ -1,9 +1,9 @@
 import { useRef, useEffect } from 'react';
 
-import { BlockType } from '../components/EditablePage';
+import { BlockType } from '../types/';
 
 const usePrevious = (value: BlockType[]) => {
-  const ref = useRef([{}]);
+  const ref = useRef<BlockType[]>([]);
 
   useEffect(() => {
     ref.current = value;

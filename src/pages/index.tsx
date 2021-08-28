@@ -1,6 +1,7 @@
 import type { NextPageContext } from 'next';
 
-import EditablePage, { BlockType } from '../components/EditablePage';
+import EditablePage from '../components/EditablePage';
+import { BlockType } from '../types/';
 
 export interface PageProps {
   pid: string;
@@ -9,7 +10,7 @@ export interface PageProps {
 }
 
 const IndexPage = ({ pid, blocks, err }: PageProps) => {
-  return <EditablePage id={pid} fetchedBlocks={blocks} err={err} />;
+  return <EditablePage pid={pid} blocks={blocks} err={err} />;
 };
 
 export const getServerSideProps = async (context: NextPageContext) => {

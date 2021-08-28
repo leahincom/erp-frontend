@@ -4,8 +4,7 @@ import type { AppProps } from 'next/app';
 
 import Layout from '../components/Layout';
 import UserProvider from '../context/UserContext';
-
-import '../styles/initializeStyle.ts';
+import GlobalStyle from '../styles/GlobalStyle';
 import 'fontsource-nunito-sans';
 import 'fontsource-roboto';
 
@@ -16,6 +15,7 @@ interface newAppProps extends AppProps {
 function MyApp({ Component, pageProps, isAuthenticated }: newAppProps) {
   return (
     <UserProvider isAuthenticated={isAuthenticated}>
+      <GlobalStyle />
       <Layout>
         <Component {...pageProps} />
       </Layout>

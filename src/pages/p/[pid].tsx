@@ -6,7 +6,7 @@ import { PageProps } from '..';
 import EditablePage from '../../components/EditablePage';
 
 const Page = ({ pid, blocks, err }: PageProps) => {
-  return <EditablePage id={pid} fetchedBlocks={blocks} err={err} />;
+  return <EditablePage pid={pid} blocks={blocks} err={err} />;
 };
 
 export const getServerSideProps = async (context: NextPageContext) => {
@@ -23,7 +23,6 @@ export const getServerSideProps = async (context: NextPageContext) => {
     const data = await fetch(`${process.env.NEXT_PUBLIC_API}/pages/${pageId}`, {
       method: 'GET',
       credentials: 'include',
-      // Forward the authentication cookie to the backend
       headers,
     }).then((res) => res.json());
     return { props: { blocks: data.page.blocks, pid: pageId, err: false } };

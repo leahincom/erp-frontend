@@ -3,47 +3,36 @@ import { useState, useEffect } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 
 import { usePrevious } from '../../hooks';
+import { PageProps } from '../../pages';
+import { BlockType } from '../../types/';
 import objectId from '../../utils/objectId';
 import setCaretToEnd from '../../utils/setCaretToEnd';
 import EditableBlock from '../EditableBlock';
 import Notice from '../Notice';
 
-export type BlockType = {
-  _id: string;
-  id?: string;
-  tag: string;
-  html: string;
-  imageUrl: string;
-};
-
-interface EditablePageProps {
-  id: string;
-  fetchedBlocks: BlockType[];
-  err: Error;
-}
-
-const EditablePage = ({ id, fetchedBlocks, err }: EditablePageProps) => {
+const EditablePage = ({ pid: id, blocks: fetchedBlocks, err }: PageProps) => {
   const router = useRouter();
   const [blocks, setBlocks] = useState(fetchedBlocks);
   const [currentBlockId, setCurrentBlockId] = useState('');
 
   const prevBlocks = usePrevious(blocks);
 
+  const updatePageOnServer = async (blocks: BlockType[]) => {
+    try {
+      await fetch(`${process.env.NEXT_PUBLIC_API}/pages/${id}`, {
+        method: 'PUT',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          blocks,
+        }),
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
-    const updatePageOnServer = async (blocks: BlockType[]) => {
-      try {
-        await fetch(`${process.env.NEXT_PUBLIC_API}/pages/${id}`, {
-          method: 'PUT',
-          credentials: 'include',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            blocks,
-          }),
-        });
-      } catch (err) {
-        console.log(err);
-      }
-    };
     if (prevBlocks && prevBlocks !== blocks) {
       updatePageOnServer(blocks);
     }
@@ -51,7 +40,7 @@ const EditablePage = ({ id, fetchedBlocks, err }: EditablePageProps) => {
 
   useEffect(() => {
     if (prevBlocks && blocks && prevBlocks.length + 1 === blocks.length) {
-      const nextBlockPosition = blocks.map((b) => b._id).indexOf(currentBlockId) + 1;
+      const nextBlockPosition = blocks.map((b) => b.id).indexOf(currentBlockId) + 1;
       const nextBlock = document.querySelector(`[data-position="${nextBlockPosition}]`);
       if (nextBlock) {
         (nextBlock as HTMLElement).focus();
@@ -59,17 +48,17 @@ const EditablePage = ({ id, fetchedBlocks, err }: EditablePageProps) => {
     }
 
     if (prevBlocks && blocks && prevBlocks.length - 1 === blocks.length) {
-      const lastBlockPosition = prevBlocks.map((b) => b._id).indexOf(currentBlockId);
+      const lastBlockPosition = prevBlocks.map((b) => b.id).indexOf(currentBlockId);
       const lastBlock = document.querySelector(`[data-position="${lastBlockPosition}]`);
       if (lastBlock) {
-        setCaretToEnd(lastBlock);
+        setCaretToEnd(lastBlock as HTMLElement);
       }
     }
   }, [blocks, prevBlocks, currentBlockId]);
 
   const deleteImageOnServer = async (imageUrl: string) => {
     try {
-      const data = await fetch(`${process.env.NEXT_PUBLIC_API}/pages/${imageUrl}`, {
+      await fetch(`${process.env.NEXT_PUBLIC_API}/pages/${imageUrl}`, {
         method: 'DELETE',
         headers: {
           Accept: 'application/json',
@@ -82,7 +71,7 @@ const EditablePage = ({ id, fetchedBlocks, err }: EditablePageProps) => {
   };
 
   const updateBlockHandler = (currentBlock: BlockType) => {
-    const index = blocks.map((b) => b._id).indexOf(currentBlock.id);
+    const index = blocks.map((b) => b.id).indexOf(currentBlock.id);
     const oldBlock = blocks[index];
     const updatedBlocks = [...blocks];
     updatedBlocks[index] = {
@@ -100,9 +89,9 @@ const EditablePage = ({ id, fetchedBlocks, err }: EditablePageProps) => {
 
   const addBlockHandler = (currentBlock: BlockType) => {
     setCurrentBlockId(currentBlock.id);
-    const index = blocks.map((b) => b._id).indexOf(currentBlock.id);
+    const index = blocks.map((b) => b.id).indexOf(currentBlock.id);
     const updatedBlocks = [...blocks];
-    const newBlock = { _id: objectId(), tag: 'p', html: '', imageUrl: '' };
+    const newBlock: BlockType = { id: objectId(), tag: 'p', html: '', imageUrl: '' };
     updatedBlocks.splice(index + 1, 0, newBlock);
     updatedBlocks[index] = {
       ...updatedBlocks[index],
@@ -116,7 +105,7 @@ const EditablePage = ({ id, fetchedBlocks, err }: EditablePageProps) => {
   const deleteBlockHandler = (currentBlock: BlockType) => {
     if (blocks.length > 1) {
       setCurrentBlockId(currentBlock.id);
-      const index = blocks.map((b) => b._id).indexOf(currentBlock.id);
+      const index = blocks.map((b) => b.id).indexOf(currentBlock.id);
       const deletedBlock = blocks[index];
       const updatedBlocks = [...blocks];
       updatedBlocks.splice(index, 1);
@@ -141,6 +130,23 @@ const EditablePage = ({ id, fetchedBlocks, err }: EditablePageProps) => {
     setBlocks(updatedBlocks);
   };
 
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    try {
+      await fetch(`${process.env.NEXT_PUBLIC_API}/pages/${id}`, {
+        method: 'PUT',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          blocks,
+        }),
+      }).then((res) => res.json());
+      router.push('/pages');
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   if (err) {
     return (
       <Notice status='ERROR'>
@@ -159,31 +165,34 @@ const EditablePage = ({ id, fetchedBlocks, err }: EditablePageProps) => {
           <p>It will be automatically deleted after 24 hours.</p>
         </Notice>
       )}
-      <DragDropContext onDragEnd={onDragEndHandler}>
-        <Droppable droppableId={id}>
-          {(provided) => (
-            <div ref={provided.innerRef} {...provided.droppableProps}>
-              {blocks.map((block: BlockType) => {
-                const position = blocks.map((b: BlockType) => b._id).indexOf(block._id) + 1;
-                return (
-                  <EditableBlock
-                    key={block._id}
-                    position={position}
-                    id={block._id}
-                    tag={block.tag}
-                    html={block.html}
-                    imageUrl={block.imageUrl}
-                    pageId={id}
-                    addBlock={addBlockHandler}
-                    deleteBlock={deleteBlockHandler}
-                    updateBlock={updateBlockHandler}
-                  />
-                );
-              })}
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
+      <form id='save_page' onSubmit={handleSubmit}>
+        <DragDropContext onDragEnd={onDragEndHandler}>
+          <Droppable droppableId={id}>
+            {(provided) => (
+              <div ref={provided.innerRef} {...provided.droppableProps}>
+                {blocks.map((block: BlockType) => {
+                  const position = blocks.map((b: BlockType) => b.id).indexOf(block.id) + 1;
+                  return (
+                    <EditableBlock
+                      key={block.id}
+                      position={position}
+                      id={block.id}
+                      tag={block.tag}
+                      html={block.html}
+                      imageUrl={block.imageUrl}
+                      pageId={id}
+                      addBlock={addBlockHandler}
+                      deleteBlock={deleteBlockHandler}
+                      updateBlock={updateBlockHandler}
+                    />
+                  );
+                })}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
+        <button type='submit'>Save</button>
+      </form>
     </>
   );
 };

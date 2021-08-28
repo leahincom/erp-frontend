@@ -32,15 +32,13 @@ const LoginPage = () => {
   const dispatch = useContext(UserDispatchContext);
   const router = useRouter();
 
-  let values: any;
-  form.inputs.forEach((input) => (values[input.id] = input.value));
-  const [formData, setFormData] = useState(values);
+  const [formData, setFormData] = useState({ email: '', password: '' });
 
   const handleInputChange = (id: string, value: string) => {
     setFormData({ ...formData, [id]: value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     setNotice(RESET_NOTICE);
     try {
@@ -67,7 +65,7 @@ const LoginPage = () => {
     }
   };
 
-  const handlePasswordReset = (e) => {
+  const handlePasswordReset = (e: any) => {
     e.preventDefault();
     router.push('/reset');
   };
@@ -77,16 +75,18 @@ const LoginPage = () => {
       <h1 className='pageHeading'>Login</h1>
       <form id={form.id} onSubmit={handleSubmit}>
         {form.inputs.map((input, key) => {
-          <Input
-            key={key}
-            formId={form.id}
-            id={input.id}
-            type={input.type}
-            label={input.label}
-            required={input.required}
-            value={formData[input.id]}
-            setValue={(value: string) => handleInputChange(input.id, value)}
-          />;
+          return (
+            <Input
+              key={key}
+              formId={form.id}
+              id={input.id}
+              type={input.type}
+              label={input.label}
+              required={input.required}
+              value={formData[input.id]}
+              setValue={(value: string) => handleInputChange(input.id, value)}
+            />
+          );
         })}
         {notice.message && (
           <Notice status={notice.type} mini>
@@ -94,9 +94,9 @@ const LoginPage = () => {
           </Notice>
         )}
         <button type='submit'>Login</button>
-        <button type='button' onClick={handlePasswordReset}>
+        {/* <button type='button' onClick={handlePasswordReset}>
           Forgot password ?
-        </button>
+        </button> */}
       </form>
       <p>
         Don't have an account yet?{' '}

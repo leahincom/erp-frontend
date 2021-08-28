@@ -1,4 +1,4 @@
-const setCaretToEnd = (element: Element) => {
+const setCaretToEnd = (element: HTMLElement) => {
   const range = document.createRange();
   const selection = window.getSelection();
   range.selectNodeContents(element);

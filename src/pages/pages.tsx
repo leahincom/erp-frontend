@@ -4,24 +4,15 @@ import React, { useState } from 'react';
 
 import Button from '../components/Button';
 import Card from '../components/Card';
-import { BlockType } from '../components/EditablePage';
 import Notice from '../components/Notice';
+import { PageType, DataType } from '../types/';
 
-export type PageType = {
-  _id: string;
-  updatedAt: string;
-  blocks: BlockType[];
-  errCode: boolean;
-};
+interface PagesPageProps {
+  pages: DataType[];
+}
 
-type DataType = {
-  _id: string;
-  page: PageType;
-};
-
-const PagesPage = (pages: DataType[]) => {
-  const initialPages = pages || [];
-  const [cards, setCards] = useState(initialPages.map((data: DataType) => data.page));
+const PagesPage = ({ pages }: PagesPageProps) => {
+  const [cards, setCards] = useState<PageType[]>(pages.length > 0 ? pages.map((data) => data.page) : []);
 
   const deleteCard = async (pageId: string) => {
     try {
@@ -92,7 +83,7 @@ export const getServerSideProps = async (context: NextPageContext) => {
     const pageIdList = data.pages;
     const pages: PageType[] = await Promise.all(
       pageIdList.map(async (id: string) => {
-        await fetch(`${process.env.NEXT_PUBLIC_API}/pages/${id}`, {
+        return await fetch(`${process.env.NEXT_PUBLIC_API}/pages/${id}`, {
           method: 'GET',
           credentials: 'include',
           headers,
@@ -100,8 +91,8 @@ export const getServerSideProps = async (context: NextPageContext) => {
       }),
     );
 
-    const filterdPages = pages.filter((page: PageType) => !page.errCode);
-    return { props: { pages: filterdPages } };
+    const filteredPages = pages.filter((page: PageType) => !page.errCode);
+    return { props: { pages: filteredPages } };
   } catch (err) {
     console.log(err);
     return { props: {} };

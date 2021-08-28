@@ -4,18 +4,21 @@ import { Draggable } from 'react-beautiful-dnd';
 import ContentEditable from 'react-contenteditable';
 import styled from 'styled-components';
 
+import { StateType } from '../../types';
 import { setCaretToEnd, getCaretCoordinates, getSelection } from '../../utils/index';
 import ActionMenu from '../ActionMenu';
 import TagSelectorMenu from '../TagSelectorMenu';
 
-const BlockWrapper = styled(ContentEditable)`
-  padding: 0.25rem;
-  -webkit-user-select: text;
-  user-select: text;
+const DraggableWrapper = styled.div`
+  .block {
+    padding: 0.25rem;
+    -webkit-user-select: text;
+    user-select: text;
+  }
 
-  :focus,
-  &.isDragging,
-  &.blockSelected {
+  .block:focus,
+  .isDragging,
+  .blockSelected {
     outline-color: var(--tertiary);
     background: var(--tertiary);
     & ~ .dragHandle {
@@ -23,52 +26,49 @@ const BlockWrapper = styled(ContentEditable)`
     }
   }
 
-  &.placeholder {
+  .placeholder {
     color: rgba(72, 72, 72, 0.25);
   }
 
-  &.blockSelected.image {
-    opacity: 0.75;
-  }
-`;
-
-const DraggableWrapper = styled.div`
-  &.block {
+  .block {
     display: inline-block;
     width: calc(100% - 1rem);
   }
 
   :hover {
     .block {
-      outline-color: $tertiary;
+      outline-color: var(--tertiary);
       background: #fafafa;
     }
-
     .dragHandle {
       opacity: 1;
     }
   }
-`;
 
-const DragHandleWrapper = styled.span`
-  display: inline-block;
-  opacity: 0;
-  width: 1rem;
-  img {
-    display: block;
-    margin: auto;
+  .dragHandle {
+    display: inline-block;
+    opacity: 0;
+    width: 1rem;
+    img {
+      display: block;
+      margin: auto;
+    }
   }
-`;
 
-const ImageWrapper = styled.div`
-  display: inline-block;
-  padding: 0.25rem;
-  width: calc(100% - 1rem);
-  img {
-    display: block;
-    margin: 0 auto;
-    max-width: 100%;
-    max-height: 600px;
+  .image {
+    display: inline-block;
+    padding: 0.25rem;
+    width: calc(100% - 1rem);
+    img {
+      display: block;
+      margin: 0 auto;
+      max-width: 100%;
+      max-height: 600px;
+    }
+  }
+
+  .blockSelected.image {
+    opacity: 0.75;
   }
 `;
 
@@ -82,35 +82,15 @@ const FileInputLabelWrapper = styled.label`
 
 const CMD_KEY = '/';
 
-export type StateType = {
-  htmlBackup: string | null;
-  html: string;
-  tag: string;
-  imageUrl: string;
-  placeholder: boolean;
-  previousKey: string | null;
-  isTyping: boolean;
-  tagSelectorMenuOpen: boolean;
-  tagSelectorMenuPosition: {
-    x: number | null;
-    y: number | null;
-  };
-  actionMenuOpen: boolean;
-  actionMenuPosition: {
-    x: number | null;
-    y: number | null;
-  };
-};
-
 type PlaceholderProps = {
   block: HTMLElement;
-  position: { x: number | null; y: number | null };
+  position: number;
   content: string;
 };
 
 class EditableBlock extends React.Component<any, StateType> {
   contentEditable: RefObject<HTMLDivElement>;
-  fileInput: null;
+  fileInput: HTMLInputElement | null;
 
   constructor(props: any) {
     super(props);
@@ -130,10 +110,10 @@ class EditableBlock extends React.Component<any, StateType> {
     this.addPlaceholder = this.addPlaceholder.bind(this);
     this.calculateActionMenuPosition = this.calculateActionMenuPosition.bind(this);
     this.calculateTagSelectorMenuPosition = this.calculateTagSelectorMenuPosition.bind(this);
-    this.contentEditable = React.createRef();
+    this.contentEditable = React.createRef<HTMLDivElement>();
     this.fileInput = null;
     this.state = {
-      htmlBackup: null,
+      htmlBackup: '',
       html: '',
       tag: 'p',
       imageUrl: '',
@@ -154,11 +134,13 @@ class EditableBlock extends React.Component<any, StateType> {
   }
 
   componentDidMount() {
-    const hasPlaceholder = this.addPlaceholder({
-      block: this.contentEditable.current,
-      position: this.props.position,
-      content: this.props.html || this.props.imageUrl,
-    });
+    const hasPlaceholder =
+      this.contentEditable.current &&
+      this.addPlaceholder({
+        block: this.contentEditable.current,
+        position: this.props.position,
+        content: this.props.html || this.props.imageUrl,
+      });
 
     if (!hasPlaceholder) {
       this.setState({
@@ -190,7 +172,7 @@ class EditableBlock extends React.Component<any, StateType> {
     document.removeEventListener('click', this.closeActionMenu, false);
   }
 
-  handleChange(e) {
+  handleChange(e: any) {
     this.setState({ ...this.state, html: e.target.value });
   }
 
@@ -207,18 +189,20 @@ class EditableBlock extends React.Component<any, StateType> {
     }
   }
 
-  handleBlur(e) {
-    const hasPlaceholder = this.addPlaceholder({
-      block: this.contentEditable.current,
-      position: this.props.position,
-      content: this.state.html || this.state.imageUrl,
-    });
+  handleBlur() {
+    const hasPlaceholder =
+      this.contentEditable.current &&
+      this.addPlaceholder({
+        block: this.contentEditable.current,
+        position: this.props.position,
+        content: this.state.html || this.state.imageUrl,
+      });
     if (!hasPlaceholder) {
       this.setState({ ...this.state, isTyping: false });
     }
   }
 
-  handleKeyDown(e) {
+  handleKeyDown(e: any) {
     if (e.key === CMD_KEY) {
       this.setState({ htmlBackup: this.state.html });
     } else if (e.key === 'Backspace' && !this.state.html) {
@@ -236,26 +220,30 @@ class EditableBlock extends React.Component<any, StateType> {
     this.setState({ previousKey: e.key });
   }
 
-  handleKeyUp(e) {
+  handleKeyUp(e: any) {
     if (e.key === CMD_KEY) {
       this.openTagSelectorMenu('KEY_CMD');
     }
   }
 
   handleMouseUp() {
-    const block = this.contentEditable.current;
-    const { selectionStart, selectionEnd } = getSelection(block);
-    if (selectionStart !== selectionEnd) {
-      this.openActionMenu(block, 'TEXT_SELECTION');
+    if (this.contentEditable.current) {
+      const block = this.contentEditable.current;
+      const { selectionStart, selectionEnd } = getSelection(block);
+      if (selectionStart !== selectionEnd) {
+        this.openActionMenu(block, 'TEXT_SELECTION');
+      }
     }
   }
 
-  handleDragHandleClick(e) {
-    const dragHandle = e.target;
-    this.openActionMenu(dragHandle, 'DRAG_HANDLE_CLICK');
+  handleDragHandleClick(e: any) {
+    if (e.target) {
+      const dragHandle = e.target;
+      this.openActionMenu(dragHandle, 'DRAG_HANDLE_CLICK');
+    }
   }
 
-  openActionMenu(parent: HTMLElement, trigger: string) {
+  openActionMenu(parent: any, trigger: string) {
     const { x, y } = this.calculateActionMenuPosition(parent, trigger);
     this.setState({
       ...this.state,
@@ -263,8 +251,6 @@ class EditableBlock extends React.Component<any, StateType> {
       actionMenuOpen: true,
     });
 
-    // Add listener asynchronously to avoid conflicts with
-    // the double click of the text selection
     setTimeout(() => {
       document.addEventListener('click', this.closeActionMenu, false);
     }, 100);
@@ -316,10 +302,11 @@ class EditableBlock extends React.Component<any, StateType> {
       });
     } else {
       if (this.state.isTyping) {
-        this.setState({ tag, html: this.state.htmlBackup }, () => {
-          setCaretToEnd(this.contentEditable.current);
-          this.closeTagSelectorMenu();
-        });
+        this.state.htmlBackup &&
+          this.setState({ tag, html: this.state.htmlBackup }, () => {
+            this.contentEditable.current && setCaretToEnd(this.contentEditable.current);
+            this.closeTagSelectorMenu();
+          });
       } else {
         this.setState({ ...this.state, tag }, () => {
           this.closeTagSelectorMenu();
@@ -329,7 +316,7 @@ class EditableBlock extends React.Component<any, StateType> {
   }
 
   async handleImageUpload() {
-    if (this.fileInput && this.fileInput.files[0]) {
+    if (this.fileInput && this.fileInput.files && this.fileInput.files[0]) {
       const pageId = this.props.pageId;
       const imageFile = this.fileInput.files[0];
       const formData = new FormData();
@@ -351,7 +338,7 @@ class EditableBlock extends React.Component<any, StateType> {
 
   addPlaceholder({ block, position, content }: PlaceholderProps) {
     const isFirstBlockWithoutHtml = position === 1 && !content;
-    const isFirstBlockWithoutSibling = !block.parentElement.nextElementSibling;
+    const isFirstBlockWithoutSibling = block.parentElement && !block.parentElement.nextElementSibling;
 
     if (isFirstBlockWithoutHtml && isFirstBlockWithoutSibling) {
       this.setState({
@@ -391,7 +378,9 @@ class EditableBlock extends React.Component<any, StateType> {
         return { x: caretLeft, y: caretTop };
       case 'ACTION_MENU':
         const { x: actionX, y: actionY } = this.state.actionMenuPosition;
-        return { x: actionX - 40, y: actionY };
+        if (actionX && actionY) {
+          return { x: actionX - 40, y: actionY };
+        }
       default:
         return { x: null, y: null };
     }
@@ -420,7 +409,7 @@ class EditableBlock extends React.Component<any, StateType> {
           {(provided, snapshot) => (
             <DraggableWrapper ref={provided.innerRef} {...provided.dragHandleProps}>
               {this.state.tag !== 'img' && (
-                <BlockWrapper
+                <ContentEditable
                   innerRef={this.contentEditable}
                   data-position={this.props.position}
                   data-tag={this.state.tag}
@@ -433,6 +422,7 @@ class EditableBlock extends React.Component<any, StateType> {
                   onMouseUp={this.handleMouseUp}
                   tagName={this.state.tag}
                   className={[
+                    'block',
                     this.state.isTyping || this.state.actionMenuOpen || this.state.tagSelectorMenuOpen
                       ? 'blockSelected'
                       : null,
@@ -442,11 +432,12 @@ class EditableBlock extends React.Component<any, StateType> {
                 />
               )}
               {this.state.tag === 'img' && (
-                <ImageWrapper
+                <div
                   data-position={this.props.position}
                   data-tag={this.state.tag}
                   ref={this.contentEditable}
                   className={[
+                    'image',
                     this.state.actionMenuOpen || this.state.tagSelectorMenuOpen ? 'blockSelected' : null,
                   ].join(' ')}
                 >
@@ -469,16 +460,17 @@ class EditableBlock extends React.Component<any, StateType> {
                       alt={/[^\/]+(?=\.[^\/.]*$)/.exec(this.state.imageUrl)[0]}
                     />
                   )}
-                </ImageWrapper>
+                </div>
               )}
-              <DragHandleWrapper
+              <span
                 role='button'
                 tabIndex={0}
+                className='dragHandle'
                 onClick={this.handleDragHandleClick}
                 {...provided.dragHandleProps}
               >
                 <img src='../../assets/icons/Draggable.svg' alt='Icon' />
-              </DragHandleWrapper>
+              </span>
             </DraggableWrapper>
           )}
         </Draggable>

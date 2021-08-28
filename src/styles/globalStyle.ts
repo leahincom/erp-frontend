@@ -3,9 +3,9 @@ import { createGlobalStyle } from 'styled-components';
 import initializeStyle from './initializeStyle';
 import styleVariables from './styleVariables';
 
-const globalStyle = createGlobalStyle`
+const GlobalStyle = createGlobalStyle`
   ${initializeStyle}
   ${styleVariables}
 `;
 
-export default globalStyle;
+export default GlobalStyle;

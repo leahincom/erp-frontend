@@ -15,8 +15,8 @@ const initializeStyle = css`
     padding: 0;
     width: 100%;
     height: 100%;
-    color: $text;
-    font-family: $regular;
+    color: var(--text);
+    font-family: var(--regular);
     font-size: 1rem;
   }
 
@@ -68,7 +68,7 @@ const initializeStyle = css`
 
   h1.pageHeading {
     margin-bottom: 3rem;
-    color: $primary;
+    color: var(--primary);
   }
 
   form {
@@ -76,19 +76,19 @@ const initializeStyle = css`
       margin: 2rem 1rem 3rem 0;
       border: none;
       border-radius: 0.5rem;
-      background: $secondary;
+      background: var(--secondary);
       padding: 0 1rem;
       width: auto;
       min-width: 9rem;
       height: 2.6rem;
-      color: $primary;
-      color: $primary;
-      font-family: $accent;
+      color: var(--primary);
+      color: var(--primary);
+      font-family: var(--accent);
       font-size: 1rem;
       font-weight: 700;
     }
     button:first-of-type {
-      background: $primary;
+      background: var(--primary);
       color: #ffffff;
     }
     button:hover,

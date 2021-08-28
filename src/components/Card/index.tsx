@@ -4,8 +4,8 @@ import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
+import { BlockType } from '../../types/';
 import ContextMenu from '../ContextMenu';
-import { BlockType } from '../EditablePage';
 
 const CardBarWrapper = styled.div`
   position: relative;
@@ -19,8 +19,8 @@ const CardWrapper = styled.article`
   border-radius: 0.5rem;
   background: #fafafa;
   padding: 1rem 1rem 3rem 1rem;
-  color: $text;
-  font-family: $regular;
+  color: var(--text);
+  font-family: var(--regular);
   font-size: 1rem;
 `;
 
@@ -29,8 +29,8 @@ const DateWrapper = styled.div`
   margin: 0;
   text-transform: uppercase;
   letter-spacing: +0.5px;
-  color: $text;
-  font-family: $regular;
+  color: var(--text);
+  font-family: var(--regular);
   font-size: 0.875rem;
 `;
 

@@ -40,15 +40,13 @@ const SinupPage = () => {
   const dispatch = useContext(UserDispatchContext);
   const router = useRouter();
 
-  let values: any;
-  form.inputs.forEach((input) => (values[input.id] = input.value));
-  const [formData, setFormData] = useState(values);
+  const [formData, setFormData] = useState({ name: '', email: '', password: '' });
 
   const handleInputChange = (id: string, value: string) => {
     setFormData({ ...formData, [id]: value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     setNotice(RESET_NOTICE);
 
