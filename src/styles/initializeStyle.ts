@@ -96,6 +96,75 @@ const initializeStyle = css`
       cursor: pointer;
     }
   }
+
+  .block {
+    padding: 0.25rem;
+    -webkit-user-select: text;
+    user-select: text;
+  }
+
+  .block:focus,
+  .isDragging,
+  .blockSelected {
+    outline-color: var(--tertiary);
+    background: var(--tertiary);
+    & ~ .dragHandle {
+      opacity: 1;
+    }
+  }
+
+  .placeholder {
+    color: rgba(72, 72, 72, 0.25);
+  }
+
+  .draggable .block {
+    display: inline-block;
+    width: calc(100% - 1rem);
+  }
+
+  .draggable:hover {
+    .block {
+      outline-color: var(--tertiary);
+      background: #fafafa;
+    }
+    .dragHandle {
+      opacity: 1;
+    }
+  }
+
+  .dragHandle {
+    display: inline-block;
+    opacity: 0;
+    width: 1rem;
+    img {
+      display: block;
+      margin: auto;
+    }
+  }
+
+  .image {
+    display: inline-block;
+    padding: 0.25rem;
+    width: calc(100% - 1rem);
+    img {
+      display: block;
+      margin: 0 auto;
+      max-width: 100%;
+      max-height: 600px;
+    }
+  }
+
+  .blockSelected.image {
+    opacity: 0.75;
+  }
+
+  .fileInputLabel {
+    display: block;
+    padding: 0.5rem 0.25rem;
+    letter-spacing: 0.5px;
+    color: #888888;
+    font-size: 0.875rem;
+  }
 `;
 
 export default initializeStyle;

@@ -54,7 +54,7 @@ const AccountPage = (user: UserType) => {
     setFormData({ ...formData, [id]: value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     setNotice(RESET_NOTICE);
 

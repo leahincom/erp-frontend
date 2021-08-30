@@ -407,7 +407,7 @@ class EditableBlock extends React.Component<any, StateType> {
         )}
         <Draggable draggableId={this.props.id} index={this.props.position}>
           {(provided, snapshot) => (
-            <DraggableWrapper ref={provided.innerRef} {...provided.dragHandleProps}>
+            <div ref={provided.innerRef} className='draggable' {...provided.draggableProps}>
               {this.state.tag !== 'img' && (
                 <ContentEditable
                   innerRef={this.contentEditable}
@@ -450,9 +450,9 @@ class EditableBlock extends React.Component<any, StateType> {
                     hidden
                   />
                   {!this.state.imageUrl && (
-                    <FileInputLabelWrapper htmlFor={`${this.props.id}_fileInput`}>
+                    <label htmlFor={`${this.props.id}_fileInput`} className='fileInputLabel'>
                       No Image Selected. Click To Select.
-                    </FileInputLabelWrapper>
+                    </label>
                   )}
                   {this.state.imageUrl && (
                     <img
@@ -471,7 +471,7 @@ class EditableBlock extends React.Component<any, StateType> {
               >
                 <img src='../../assets/icons/Draggable.svg' alt='Icon' />
               </span>
-            </DraggableWrapper>
+            </div>
           )}
         </Draggable>
       </>
