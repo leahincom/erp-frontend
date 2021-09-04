@@ -25,10 +25,10 @@ const HeaderWrapper = styled.header`
 `;
 
 const ContentWrapper = styled.main`
+  margin-bottom: 3rem;
   padding: 1rem 0 1rem 1rem;
   width: 100%;
   max-width: var(--max-width);
-  height: 100%;
 `;
 
 type ChildrenType = {
