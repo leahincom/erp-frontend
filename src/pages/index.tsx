@@ -1,7 +1,9 @@
 import type { NextPageContext } from 'next';
 
-import EditablePage from '../components/EditablePage';
+import EditablePage from '../components/common/EditablePage';
+import { postPages } from '../lib/api';
 import { BlockType } from '../types/';
+import objectId from '../utils/objectId';
 
 export interface PageProps {
   pid: string;
@@ -14,7 +16,7 @@ const IndexPage = ({ pid, blocks, err }: PageProps) => {
 };
 
 export const getServerSideProps = async (context: NextPageContext) => {
-  const blocks = [{ tag: 'p', html: '', imageUrl: '' }];
+  const blocks = [{ tag: 'p', html: '', imageUrl: '', id: objectId() }];
   const res = context.res;
   const req = context.req;
   const headers = new Headers();
@@ -22,14 +24,7 @@ export const getServerSideProps = async (context: NextPageContext) => {
   req && req.headers && req.headers.cookie && headers.append('Cookie', req.headers.cookie);
 
   try {
-    const data = await fetch(`${process.env.NEXT_PUBLIC_API}/pages`, {
-      method: 'POST',
-      credentials: 'include',
-      headers,
-      body: JSON.stringify({
-        blocks,
-      }),
-    }).then((res) => res.json());
+    const data = await postPages(headers, blocks);
     const pageId = data.pageId;
     const creator = data.creator;
     const query = !creator ? '?public=true' : '';

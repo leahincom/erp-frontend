@@ -3,9 +3,11 @@ import cookies from 'next-cookies';
 import { useRouter } from 'next/router';
 import React, { useContext, useState } from 'react';
 
-import Input from '../components/Input';
-import Notice from '../components/Notice';
+import Input from '../components/common/Input';
+import Notice from '../components/common/Notice';
 import { UserDispatchContext } from '../context/UserContext';
+import { createAccount } from '../lib/api';
+import { FormType } from '../types';
 
 const form = {
   id: 'signup',
@@ -40,7 +42,7 @@ const SinupPage = () => {
   const dispatch = useContext(UserDispatchContext);
   const router = useRouter();
 
-  const [formData, setFormData] = useState({ name: '', email: '', password: '' });
+  const [formData, setFormData] = useState<FormType>({ name: '', email: '', password: '' });
 
   const handleInputChange = (id: string, value: string) => {
     setFormData({ ...formData, [id]: value });
@@ -51,17 +53,7 @@ const SinupPage = () => {
     setNotice(RESET_NOTICE);
 
     try {
-      const data = await fetch(`${process.env.NEXT_PUBLIC_API}/users/signup`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          password: formData.password,
-        }),
-      }).then((res) => res.json());
-
+      const data = await createAccount(formData);
       if (data.errCode) {
         setNotice({ type: 'ERROR', message: data.message });
       } else {

@@ -3,16 +3,14 @@ import cookies from 'next-cookies';
 import Router from 'next/router';
 import { useEffect } from 'react';
 
+import { logout } from '../lib/api';
+
 const LogoutPage = () => {
   useEffect(() => {
     const logoutOnServer = async () => {
       const router = Router;
       try {
-        await fetch(`${process.env.NEXT_PUBLIC_API}/users/logout`, {
-          method: 'POST',
-          credentials: 'include',
-          headers: { 'Content-Type': 'application/json' },
-        });
+        await logout();
         router.push('/login');
       } catch (err) {
         console.log(err);

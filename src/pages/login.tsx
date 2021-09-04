@@ -2,9 +2,11 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState, useContext } from 'react';
 
-import Input from '../components/Input';
-import Notice from '../components/Notice';
+import Input from '../components/common/Input';
+import Notice from '../components/common/Notice';
 import { UserDispatchContext } from '../context/UserContext';
+import { login } from '../lib/api';
+import { FormType } from '../types';
 
 const form = {
   id: 'login',
@@ -32,7 +34,7 @@ const LoginPage = () => {
   const dispatch = useContext(UserDispatchContext);
   const router = useRouter();
 
-  const [formData, setFormData] = useState({ email: '', password: '' });
+  const [formData, setFormData] = useState<FormType>({ email: '', password: '' });
 
   const handleInputChange = (id: string, value: string) => {
     setFormData({ ...formData, [id]: value });
@@ -42,16 +44,7 @@ const LoginPage = () => {
     e.preventDefault();
     setNotice(RESET_NOTICE);
     try {
-      const data = await fetch(`${process.env.NEXT_PUBLIC_API}/users/login`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: formData.email,
-          password: formData.password,
-        }),
-      }).then((res) => res.json());
-
+      const data = await login(formData);
       if (data.errcode) {
         setNotice({ type: 'ERROR', message: data.message });
       } else {
@@ -99,7 +92,7 @@ const LoginPage = () => {
         </button> */}
       </form>
       <p>
-        Don't have an account yet?{' '}
+        Don&apos;t have an account yet?{' '}
         <Link href='/signup' passHref>
           <strong>Sign up here.</strong>
         </Link>

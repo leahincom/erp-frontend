@@ -2,14 +2,17 @@ import cookies from 'next-cookies';
 import App, { AppContext } from 'next/app';
 import type { AppProps } from 'next/app';
 
-import Layout from '../components/Layout';
+import Layout from '../components/common/Layout';
 import UserProvider from '../context/UserContext';
 import GlobalStyle from '../styles/GlobalStyle';
 import 'fontsource-nunito-sans';
 import 'fontsource-roboto';
+import { ModelType } from '../types';
 
 interface newAppProps extends AppProps {
   isAuthenticated: boolean;
+  loadData: File;
+  modelData: ModelType[];
 }
 
 function MyApp({ Component, pageProps, isAuthenticated }: newAppProps) {
@@ -24,7 +27,7 @@ function MyApp({ Component, pageProps, isAuthenticated }: newAppProps) {
 }
 
 MyApp.getInitialProps = async (context: AppContext) => {
-  let isAuthenticated = false;
+  let isAuthenticated: boolean = false;
 
   const { token } = cookies(context.ctx);
   if (token) {

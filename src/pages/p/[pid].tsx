@@ -3,7 +3,8 @@ import React from 'react';
 import { resetServerContext } from 'react-beautiful-dnd';
 
 import { PageProps } from '..';
-import EditablePage from '../../components/EditablePage';
+import EditablePage from '../../components/common/EditablePage';
+import { getPage } from '../../lib/api';
 
 const Page = ({ pid, blocks, err }: PageProps) => {
   return <EditablePage pid={pid} blocks={blocks} err={err} />;
@@ -20,11 +21,7 @@ export const getServerSideProps = async (context: NextPageContext) => {
   req && req.headers && req.headers.cookie && headers.append('Cookie', req.headers.cookie);
 
   try {
-    const data = await fetch(`${process.env.NEXT_PUBLIC_API}/pages/${pageId}`, {
-      method: 'GET',
-      credentials: 'include',
-      headers,
-    }).then((res) => res.json());
+    const data = await getPage(headers, pageId);
     return { props: { blocks: data.page.blocks, pid: pageId, err: false } };
   } catch (err) {
     console.log(err);
