@@ -7,7 +7,7 @@ import { ItemType, PositionType } from '../../types/';
 const MenuBarWrapper = styled.div<{ ref: any }>`
   display: flex;
   position: absolute;
-  right: 0;
+  right: -1rem;
   bottom: 3rem;
   flex-direction: column;
   z-index: 11;
@@ -17,6 +17,8 @@ const MenuBarWrapper = styled.div<{ ref: any }>`
 `;
 
 const MenuWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
   border-radius: 0.5rem;
   box-shadow: var(--box-shadow);
   background: white;

@@ -4,81 +4,12 @@ import { Draggable } from 'react-beautiful-dnd';
 import ContentEditable from 'react-contenteditable';
 import styled from 'styled-components';
 
+import { uploadImage } from '../../lib/api';
 import { StateType } from '../../types';
-import { setCaretToEnd, getCaretCoordinates, getSelection } from '../../utils/index';
-import ActionMenu from '../ActionMenu';
-import TagSelectorMenu from '../TagSelectorMenu';
+import { setCaretToEnd, getCaretCoordinates, getSelection } from '../../utils/';
 
-const DraggableWrapper = styled.div`
-  .block {
-    padding: 0.25rem;
-    -webkit-user-select: text;
-    user-select: text;
-  }
-
-  .block:focus,
-  .isDragging,
-  .blockSelected {
-    outline-color: var(--tertiary);
-    background: var(--tertiary);
-    & ~ .dragHandle {
-      opacity: 1;
-    }
-  }
-
-  .placeholder {
-    color: rgba(72, 72, 72, 0.25);
-  }
-
-  .block {
-    display: inline-block;
-    width: calc(100% - 1rem);
-  }
-
-  :hover {
-    .block {
-      outline-color: var(--tertiary);
-      background: #fafafa;
-    }
-    .dragHandle {
-      opacity: 1;
-    }
-  }
-
-  .dragHandle {
-    display: inline-block;
-    opacity: 0;
-    width: 1rem;
-    img {
-      display: block;
-      margin: auto;
-    }
-  }
-
-  .image {
-    display: inline-block;
-    padding: 0.25rem;
-    width: calc(100% - 1rem);
-    img {
-      display: block;
-      margin: 0 auto;
-      max-width: 100%;
-      max-height: 600px;
-    }
-  }
-
-  .blockSelected.image {
-    opacity: 0.75;
-  }
-`;
-
-const FileInputLabelWrapper = styled.label`
-  display: block;
-  padding: 0.5rem 0.25rem;
-  letter-spacing: 0.5px;
-  color: #888888;
-  font-size: 0.875rem;
-`;
+import ActionMenu from './ActionMenu';
+import TagSelectorMenu from './TagSelectorMenu';
 
 const CMD_KEY = '/';
 
@@ -321,13 +252,8 @@ class EditableBlock extends React.Component<any, StateType> {
       const imageFile = this.fileInput.files[0];
       const formData = new FormData();
       formData.append('image', imageFile);
-
       try {
-        const data = await fetch(`${process.env.NEXT_PUBLIC_API}/pages/images?pageId=${pageId}`, {
-          method: 'POST',
-          credentials: 'include',
-          body: formData,
-        }).then((res) => res.json());
+        const data = await uploadImage(pageId, formData);
         const imageUrl = data.imageUrl;
         this.setState({ ...this.state, imageUrl });
       } catch (err) {
@@ -455,10 +381,7 @@ class EditableBlock extends React.Component<any, StateType> {
                     </label>
                   )}
                   {this.state.imageUrl && (
-                    <img
-                      src={process.env.NEXT_PUBLIC_API + '/' + this.state.imageUrl}
-                      alt={/[^\/]+(?=\.[^\/.]*$)/.exec(this.state.imageUrl)[0]}
-                    />
+                    <img src={process.env.NEXT_PUBLIC_API + '/' + this.state.imageUrl} alt={this.state.imageUrl} />
                   )}
                 </div>
               )}

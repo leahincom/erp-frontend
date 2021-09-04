@@ -5,7 +5,8 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import { BlockType } from '../../types/';
-import ContextMenu from '../ContextMenu';
+
+import ContextMenu from './ContextMenu';
 
 const CardBarWrapper = styled.div`
   position: relative;
@@ -88,7 +89,7 @@ const MoreButtonWrapper = styled.span`
   bottom: 0;
   align-items: center;
   justify-content: center;
-  z-index: 11;
+  /* z-index: 5; */
   width: 5rem;
   height: 3rem;
 
