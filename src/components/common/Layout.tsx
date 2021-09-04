@@ -44,7 +44,7 @@ const Layout = ({ children }: ChildrenType) => {
         <link rel='icon' href='/favicon.ico' type='image/x-icon' />
       </Head>
       <HeaderWrapper>
-        <Link href='https://github.com/konstantinmuenster/notion-clone' passHref>
+        <Link href='https://github.com/Ewha-BTS/ERP' passHref>
           <img src='../../assets/icons/Github.svg' alt='Github Icon' />
         </Link>
       </HeaderWrapper>
