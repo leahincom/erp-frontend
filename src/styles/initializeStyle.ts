@@ -26,6 +26,7 @@ const initializeStyle = css`
 
   #layoutRoot {
     display: grid;
+    position: relative;
     grid-template-rows: auto 1fr auto;
     grid-template-columns: 100%;
     justify-items: center;
