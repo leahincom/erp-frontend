@@ -17,8 +17,22 @@ const EditablePageWrapper = styled.section`
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   margin: 0 20px 0 50px;
   width: 70%;
+  height: 100%;
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  width: 100%;
+  height: 20%;
+
+  > * {
+    margin: 0 20px;
+  }
 `;
 
 const EditablePage = ({ pid: id, blocks: fetchedBlocks, err }: PageProps) => {
@@ -140,11 +154,11 @@ const EditablePage = ({ pid: id, blocks: fetchedBlocks, err }: PageProps) => {
           <p>It will be automatically deleted after 24 hours.</p>
         </Notice>
       )}
-      <form id='save_page' onSubmit={handleSubmit}>
+      <form id='save_page' onSubmit={handleSubmit} style={{ height: '100%' }}>
         <DragDropContext onDragEnd={onDragEndHandler}>
           <Droppable droppableId={id}>
             {(provided) => (
-              <div ref={provided.innerRef} {...provided.droppableProps}>
+              <div ref={provided.innerRef} {...provided.droppableProps} style={{ height: '80%' }}>
                 {blocks.map((block: BlockType) => {
                   const position = blocks.map((b: BlockType) => b.id).indexOf(block.id) + 1;
                   return (
@@ -166,10 +180,12 @@ const EditablePage = ({ pid: id, blocks: fetchedBlocks, err }: PageProps) => {
             )}
           </Droppable>
         </DragDropContext>
-        <button type='submit'>Save</button>
-        <button type='button' onClick={() => router.back()}>
-          Go Back
-        </button>
+        <ButtonWrapper>
+          <button type='submit'>Save</button>
+          <button type='button' onClick={() => router.back()}>
+            Go Back
+          </button>
+        </ButtonWrapper>
       </form>
     </EditablePageWrapper>
   );
