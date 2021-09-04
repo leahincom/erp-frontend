@@ -25,10 +25,10 @@ const HeaderWrapper = styled.header`
 `;
 
 const ContentWrapper = styled.main`
+  margin-bottom: 3rem;
   padding: 1rem 0 1rem 1rem;
   width: 100%;
   max-width: var(--max-width);
-  height: 100%;
 `;
 
 type ChildrenType = {
@@ -44,7 +44,7 @@ const Layout = ({ children }: ChildrenType) => {
         <link rel='icon' href='/favicon.ico' type='image/x-icon' />
       </Head>
       <HeaderWrapper>
-        <Link href='https://github.com/konstantinmuenster/notion-clone' passHref>
+        <Link href='https://github.com/Ewha-BTS/ERP' passHref>
           <img src='../../assets/icons/Github.svg' alt='Github Icon' />
         </Link>
       </HeaderWrapper>
