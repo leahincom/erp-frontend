@@ -4,10 +4,16 @@ import { resetServerContext } from 'react-beautiful-dnd';
 
 import { PageProps } from '..';
 import EditablePage from '../../components/common/EditablePage';
+import SideBar from '../../components/p/SideBar';
 import { getPage } from '../../lib/api';
 
 const Page = ({ pid, blocks, err }: PageProps) => {
-  return <EditablePage pid={pid} blocks={blocks} err={err} />;
+  return (
+    <>
+      <SideBar />
+      <EditablePage pid={pid} blocks={blocks} err={err} />
+    </>
+  );
 };
 
 export const getServerSideProps = async (context: NextPageContext) => {

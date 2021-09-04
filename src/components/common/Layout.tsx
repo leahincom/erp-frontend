@@ -25,10 +25,9 @@ const HeaderWrapper = styled.header`
 `;
 
 const ContentWrapper = styled.main`
+  display: flex;
   margin-bottom: 3rem;
-  padding: 1rem 0 1rem 1rem;
   width: 100%;
-  max-width: var(--max-width);
 `;
 
 type ChildrenType = {

@@ -1,16 +1,25 @@
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
+import styled from 'styled-components';
 
 import { usePrevious } from '../../hooks';
 import { deleteImage, updatePage } from '../../lib/api';
+import { BlockType } from '../../lib/type';
 import { PageProps } from '../../pages';
-import { BlockType } from '../../types/';
 import objectId from '../../utils/objectId';
 import setCaretToEnd from '../../utils/setCaretToEnd';
 
 import EditableBlock from './EditableBlock';
 import Notice from './Notice';
+
+const EditablePageWrapper = styled.section`
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  margin: 0 20px 0 50px;
+  width: 70%;
+`;
 
 const EditablePage = ({ pid: id, blocks: fetchedBlocks, err }: PageProps) => {
   const router = useRouter();
@@ -124,7 +133,7 @@ const EditablePage = ({ pid: id, blocks: fetchedBlocks, err }: PageProps) => {
 
   const isNewPublicPage = router.query.public === 'true';
   return (
-    <>
+    <EditablePageWrapper>
       {isNewPublicPage && (
         <Notice dismissible>
           <h4>Hey 👋 You just created a public page.</h4>
@@ -162,7 +171,7 @@ const EditablePage = ({ pid: id, blocks: fetchedBlocks, err }: PageProps) => {
           Go Back
         </button>
       </form>
-    </>
+    </EditablePageWrapper>
   );
 };
 
