@@ -6,7 +6,7 @@ import React, { useContext, useState } from 'react';
 import Input from '../components/common/Input';
 import Notice from '../components/common/Notice';
 import { UserDispatchContext } from '../context/UserContext';
-import { createAccount } from '../lib/api';
+import { createAccount } from '../lib/api/usePosts';
 import { FormType } from '../lib/type';
 
 const form = {

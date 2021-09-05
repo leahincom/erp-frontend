@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import Graph from '../components/common/Graph';
-import DetailBar from '../components/customize/SideBar';
+import SideBar from '../components/common/SideBar';
+import Dashboard from '../components/customize/Dashboard';
 
 const UserDefineWrap = styled.div`
   display: flex;
@@ -13,8 +13,8 @@ const UserDefineWrap = styled.div`
 const UserDefine = () => {
   return (
     <UserDefineWrap>
-      <DetailBar />
-      <Graph />
+      <SideBar />
+      <Dashboard />
     </UserDefineWrap>
   );
 };

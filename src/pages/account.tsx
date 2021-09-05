@@ -4,7 +4,8 @@ import { useState } from 'react';
 
 import Input from '../components/common/Input';
 import Notice from '../components/common/Notice';
-import { getAccount, updateAccount } from '../lib/api';
+import { getAccount } from '../lib/api/useGets';
+import { updateAccount } from '../lib/api/usePuts';
 import { UserType } from '../lib/type';
 
 const form = {
