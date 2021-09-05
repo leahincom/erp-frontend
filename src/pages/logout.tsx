@@ -3,7 +3,7 @@ import cookies from 'next-cookies';
 import Router from 'next/router';
 import { useEffect } from 'react';
 
-import { logout } from '../lib/api';
+import { logout } from '../lib/api/usePosts';
 
 const LogoutPage = () => {
   useEffect(() => {

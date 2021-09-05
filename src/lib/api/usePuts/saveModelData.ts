@@ -1,24 +1,22 @@
-import { instance } from '..';
+import { baseURL, instance } from '..';
 import { ModelType } from '../../type';
 
 const saveModelData = async (plots: ModelType[]) => {
   try {
-    const modelData = await instance.put(
-      `/users/account`,
-      {
+    const data = await fetch(`${baseURL}/users/account`, {
+      method: 'PUT',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
         plots,
-      },
-      {
-        headers: {
-          'x-auth-token': localStorage.getItem('userToken'),
-        },
-        withCredentials: true,
-      },
-    );
-    console.log('[SUCCESS] POST model data');
-    console.log(`[RESPONSE] ${modelData}`);
+      }),
+    }).then((res) => res.json());
 
-    return modelData;
+    console.log('[SUCCESS] POST model data');
+
+    return data;
   } catch (err) {
     console.log('[FAIL] POST model data', err);
     alert('파일 로딩에 실패하였습니다.');

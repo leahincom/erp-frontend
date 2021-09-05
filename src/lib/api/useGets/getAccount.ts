@@ -1,20 +1,14 @@
-import { instance } from '..';
-
 const getAccount = async (headers: Headers) => {
   try {
-    const account = await instance.get(`/users/account`, {
-      headers: {
-        ...headers,
-        'Content-Type': 'multipart/form-data',
-        'x-auth-token': localStorage.getItem('userToken'),
-      },
-      withCredentials: true,
-    });
+    const data = await fetch(`${process.env.NEXT_PUBLIC_API}/users/account`, {
+      method: 'GET',
+      credentials: 'include',
+      headers,
+    }).then((res) => res.json());
 
     console.log('[SUCCESS] GET account data');
-    console.log(`[RESPONSE] ${account}`);
 
-    return account;
+    return data;
   } catch (err) {
     console.log('[FAIL]', err);
   }

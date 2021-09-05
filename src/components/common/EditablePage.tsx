@@ -4,7 +4,8 @@ import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 
 import { usePrevious } from '../../hooks';
-import { deleteImage, updatePage } from '../../lib/api';
+import { deleteImage } from '../../lib/api/useDeletes';
+import { updatePage } from '../../lib/api/usePuts';
 import { BlockType } from '../../lib/type';
 import { PageProps } from '../../pages';
 import objectId from '../../utils/objectId';

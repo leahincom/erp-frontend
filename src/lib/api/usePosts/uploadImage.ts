@@ -2,24 +2,15 @@ import { instance } from '..';
 
 const uploadImage = async (pageId: string, formData: FormData) => {
   try {
-    const image = await instance.post(
-      `/pages/images?pageId=${pageId}`,
-      {
-        formData,
-      },
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          'x-auth-token': localStorage.getItem('userToken'),
-        },
-        withCredentials: true,
-      },
-    );
+    const data = await fetch(`${process.env.NEXT_PUBLIC_API}/pages/images?pageId=${pageId}`, {
+      method: 'POST',
+      credentials: 'include',
+      body: formData,
+    }).then((res) => res.json());
 
     console.log('[SUCCESS] POST image data');
-    console.log(`[RESPONSE] ${image}`);
 
-    return image;
+    return data;
   } catch (err) {
     console.log('[FAIL]', err);
   }

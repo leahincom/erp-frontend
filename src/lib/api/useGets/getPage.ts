@@ -1,19 +1,16 @@
 import { instance } from '..';
 
-const getPage = async (headers: Headers, id: string) => {
+const getPage = async (headers: Headers, id: string | string[] | undefined) => {
   try {
-    const page = await instance.get(`/pages/${id}`, {
-      headers: {
-        ...headers,
-        'x-auth-token': localStorage.getItem('userToken'),
-      },
-      withCredentials: true,
-    });
+    const data = await fetch(`${process.env.NEXT_PUBLIC_API}/pages/${id}`, {
+      method: 'GET',
+      credentials: 'include',
+      headers,
+    }).then((res) => res.json());
 
-    console.log('[SUCCESS] GET pages data');
-    console.log(`[RESPONSE] ${page}`);
+    console.log('[SUCCESS] GET page data');
 
-    return page;
+    return data;
   } catch (err) {
     console.log('[FAIL]', err);
   }

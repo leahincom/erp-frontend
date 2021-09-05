@@ -1,15 +1,15 @@
-import { instance } from '..';
+import { baseURL, instance } from '..';
 
 const loadModelData = async (id: string) => {
   try {
-    const modelData = await instance.get(`/inference/${id}`, {
-      withCredentials: true,
-    });
+    const data = await fetch(`${baseURL}/inference/${id}`, {
+      method: 'GET',
+      credentials: 'include',
+    }).then((res) => res.json());
 
     console.log('[SUCCESS] GET model data');
-    console.log(`[RESPONSE] ${modelData}`);
 
-    return modelData;
+    return data;
   } catch (err) {
     console.log('[FAIL] GET model data', err);
     alert('파일 로딩에 실패하였습니다.');

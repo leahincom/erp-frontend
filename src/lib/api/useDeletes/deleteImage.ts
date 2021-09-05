@@ -1,19 +1,16 @@
-import { instance } from '..';
-
 const deleteImage = async (imageUrl: string) => {
   try {
-    const image = await instance.delete(`/pages/${imageUrl}`, {
+    const data = await fetch(`${process.env.NEXT_PUBLIC_API}/pages/${imageUrl}`, {
+      method: 'DELETE',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      withCredentials: true,
-    });
+    }).then((res) => res.json());
 
     console.log('[SUCCESS] DELETE image data');
-    console.log(`[RESPONSE] ${image}`);
 
-    return image;
+    return data;
   } catch (err) {
     console.log('[FAIL]', err);
   }

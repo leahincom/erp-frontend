@@ -3,20 +3,18 @@ import { BlockType } from '../../type';
 
 const updatePage = async (blocks: BlockType[], id: string) => {
   try {
-    const page = await instance.put(
-      `/pages/${id}`,
-      {
+    const data = await fetch(`${process.env.NEXT_PUBLIC_API}/pages/${id}`, {
+      method: 'PUT',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
         blocks,
-      },
-      {
-        withCredentials: true,
-      },
-    );
+      }),
+    });
 
     console.log('[SUCCESS] PUT page data');
-    console.log(`[RESPONSE] ${page}`);
 
-    return page;
+    return data;
   } catch (err) {
     console.log('[FAIL]', err);
   }
