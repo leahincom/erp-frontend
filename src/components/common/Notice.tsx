@@ -3,7 +3,6 @@ import styled, { CSSProperties } from 'styled-components';
 
 const NoticeWrapper = styled.div`
   position: relative;
-  margin: 1rem;
   border-radius: 0.5rem;
   background: #fffaf0;
   padding: 2rem 3rem 2rem 1rem;
@@ -16,6 +15,7 @@ const NoticeWrapper = styled.div`
   }
 
   &.errorNotice {
+    margin: 1rem;
     background: #ffe6e6;
     color: #9b2c2c;
   }

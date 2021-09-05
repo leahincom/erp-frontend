@@ -47,8 +47,7 @@ const ButtonBarWrapper = styled.span`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: 10px;
-  padding: 5px 10px;
+  margin: 5px 10px;
 `;
 
 const ButtonWrapper = styled.button`
@@ -101,7 +100,9 @@ const TabBar = () => {
     await saveModelData(generatedData.data.vizspec);
   };
 
-  const handleClick = async (e: any) => {
+  const handlePageSave = () => {};
+
+  const handleModelSave = async (e: any) => {
     // save `graphIndex` image to user's list
   };
 
@@ -127,7 +128,7 @@ const TabBar = () => {
         <>
           <Divider />
           <ButtonBarWrapper>
-            <ButtonWrapper onClick={handleClick}>SAVE</ButtonWrapper>
+            <ButtonWrapper onClick={handlePageSave}>SAVE</ButtonWrapper>
             <ButtonWrapper onClick={() => router.push('/')}>Go Back</ButtonWrapper>
           </ButtonBarWrapper>
         </>
@@ -142,7 +143,7 @@ const TabBar = () => {
                 <InputWrapper type='file' name='file' onChange={handleChange} />
               </LabelWrapper>
             </form>
-            {modelData.length > 0 ? <ButtonWrapper onClick={handleClick}>SAVE</ButtonWrapper> : ''}
+            {modelData.length > 0 ? <ButtonWrapper onClick={handleModelSave}>SAVE</ButtonWrapper> : ''}
           </ButtonBarWrapper>
         </>
       )}
