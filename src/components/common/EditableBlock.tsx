@@ -5,7 +5,7 @@ import ContentEditable from 'react-contenteditable';
 import styled from 'styled-components';
 
 import { uploadImage } from '../../lib/api';
-import { StateType } from '../../types';
+import { StateType } from '../../lib/type';
 import { setCaretToEnd, getCaretCoordinates, getSelection } from '../../utils/';
 
 import ActionMenu from './ActionMenu';

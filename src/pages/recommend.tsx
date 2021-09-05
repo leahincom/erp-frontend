@@ -1,26 +1,38 @@
+import { NextPageContext } from 'next';
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import { resetServerContext } from 'react-beautiful-dnd';
 
 import Dashboard from '../components/recommend/Dashboard';
 import SideBar from '../components/recommend/SideBar';
 
-const RecommendationWrap = styled.div`
-  display: flex;
-  margin: 0;
-  width: 100%;
-`;
+import { PageProps } from '.';
 
-const Recommendation = ({ data }) => {
-  console.log(data);
-
-  const [graph, setGraph] = useState(null);
-
+const Recommendation = ({ pid, blocks, err }: PageProps) => {
   return (
-    <RecommendationWrap>
-      <SideBar setGraph={setGraph} />
-      <Dashboard graph={graph} />
-    </RecommendationWrap>
+    <>
+      <SideBar />
+      <Dashboard />
+    </>
   );
+};
+
+export const getServerSideProps = async (context: NextPageContext) => {
+  resetServerContext();
+
+  const pageId = context.query.pid;
+  const req = context.req;
+
+  const headers = new Headers();
+  headers.append('Content-Type', 'application/json');
+  req && req.headers && req.headers.cookie && headers.append('Cookie', req.headers.cookie);
+
+  try {
+    const data = await getPage(headers, pageId);
+    return { props: { blocks: data.page.blocks, pid: pageId, err: false } };
+  } catch (err) {
+    console.log(err);
+    return { props: { blocks: null, pid: null, err: true } };
+  }
 };
 
 export default Recommendation;

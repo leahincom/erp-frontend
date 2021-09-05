@@ -6,7 +6,7 @@ import Button from '../components/common/Button';
 import Card from '../components/common/Card';
 import Notice from '../components/common/Notice';
 import { deletePage, getPage, getPages } from '../lib/api';
-import { PageType, DataType } from '../types/';
+import { PageType, DataType } from '../lib/type';
 
 interface PagesPageProps {
   pages: DataType[];

@@ -50,3 +50,17 @@ export type DataType = {
   message: string;
   page: PageType;
 };
+
+export type UserType = {
+  name: string;
+  email: string;
+  password: string;
+};
+
+export type FormType = {
+  [x: string]: string;
+};
+
+export type ModelType = {
+  [x: string]: string;
+};

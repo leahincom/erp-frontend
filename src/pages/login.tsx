@@ -6,7 +6,7 @@ import Input from '../components/common/Input';
 import Notice from '../components/common/Notice';
 import { UserDispatchContext } from '../context/UserContext';
 import { login } from '../lib/api';
-import { FormType } from '../types';
+import { FormType } from '../lib/type';
 
 const form = {
   id: 'login',

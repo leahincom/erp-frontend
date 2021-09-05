@@ -2,7 +2,7 @@ import type { NextPageContext } from 'next';
 
 import EditablePage from '../components/common/EditablePage';
 import { postPages } from '../lib/api';
-import { BlockType } from '../types/';
+import { BlockType } from '../lib/type';
 import objectId from '../utils/objectId';
 
 export interface PageProps {

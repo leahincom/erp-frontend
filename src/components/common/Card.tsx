@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import { BlockType } from '../../types/';
+import { BlockType } from '../../lib/type';
 
 import ContextMenu from './ContextMenu';
 

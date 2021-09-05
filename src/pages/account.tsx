@@ -5,7 +5,7 @@ import { useState } from 'react';
 import Input from '../components/common/Input';
 import Notice from '../components/common/Notice';
 import { getAccount, updateAccount } from '../lib/api';
-import { UserType } from '../types';
+import { UserType } from '../lib/type';
 
 const form = {
   id: 'signup',

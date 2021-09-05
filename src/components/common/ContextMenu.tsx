@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import styled from 'styled-components';
 
 import { useOnClickOutside } from '../../hooks/';
-import { ItemType, PositionType } from '../../types/';
+import { ItemType, PositionType } from '../../lib/type';
 
 const MenuBarWrapper = styled.div<{ ref: any }>`
   display: flex;
