@@ -180,12 +180,6 @@ const EditablePage = ({ pid: id, blocks: fetchedBlocks, err }: PageProps) => {
             )}
           </Droppable>
         </DragDropContext>
-        <ButtonWrapper>
-          <button type='submit'>Save</button>
-          <button type='button' onClick={() => router.back()}>
-            Go Back
-          </button>
-        </ButtonWrapper>
       </form>
     </EditablePageWrapper>
   );

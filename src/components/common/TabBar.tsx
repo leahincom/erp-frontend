@@ -113,7 +113,7 @@ const TabBar = () => {
     <TabBarWrapper>
       <IconBarWrapper>
         <IconWrapper icon={faColumns} onClick={() => router.push('/')} />
-        <IconWrapper icon={faEdit} onClick={() => router.push('/make')} />
+        <IconWrapper icon={faEdit} />
         <IconWrapper icon={faLightbulb} onClick={() => router.push('/recommend')} />
         {!isAuth && <IconWrapper icon={faSignInAlt} onClick={() => router.push('/login')} />}
         {isAuth && (
@@ -123,6 +123,15 @@ const TabBar = () => {
           </>
         )}
       </IconBarWrapper>
+      {router.pathname.includes('/p/' || '/pages') && (
+        <>
+          <Divider />
+          <ButtonBarWrapper>
+            <ButtonWrapper onClick={handleClick}>SAVE</ButtonWrapper>
+            <ButtonWrapper onClick={() => router.push('/')}>Go Back</ButtonWrapper>
+          </ButtonBarWrapper>
+        </>
+      )}
       {router.pathname.includes('recommend') && (
         <>
           <Divider />
