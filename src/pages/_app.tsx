@@ -1,13 +1,14 @@
 import cookies from 'next-cookies';
 import App, { AppContext } from 'next/app';
 import type { AppProps } from 'next/app';
+import { RecoilRoot } from 'recoil';
 
 import Layout from '../components/common/Layout';
 import UserProvider from '../context/UserContext';
+import { ModelType } from '../lib/type';
 import GlobalStyle from '../styles/GlobalStyle';
 import 'fontsource-nunito-sans';
 import 'fontsource-roboto';
-import { ModelType } from '../types';
 
 interface newAppProps extends AppProps {
   isAuthenticated: boolean;
@@ -17,12 +18,14 @@ interface newAppProps extends AppProps {
 
 function MyApp({ Component, pageProps, isAuthenticated }: newAppProps) {
   return (
-    <UserProvider isAuthenticated={isAuthenticated}>
-      <GlobalStyle />
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
-    </UserProvider>
+    <RecoilRoot>
+      <UserProvider isAuthenticated={isAuthenticated}>
+        <GlobalStyle />
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </UserProvider>
+    </RecoilRoot>
   );
 }
 

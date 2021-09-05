@@ -3,12 +3,14 @@ import { faColumns, faEdit, faSignInAlt, faSignOutAlt } from '@fortawesome/free-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/router';
 import React, { useContext, useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 
 import { DataDispatchContext, DataStateContext } from '../../context/DataContext';
 import { UserStateContext } from '../../context/UserContext';
-import { loadModelData, postSampleData, postModelData } from '../../lib/api';
-import { ModelType } from '../../types';
+import { loadModelData, postSampleData, saveModelData } from '../../lib/api';
+import { selectedGraphState } from '../../lib/state';
+import { ModelType } from '../../lib/type';
 
 const TabBarWrapper = styled.div`
   display: flex;
@@ -84,6 +86,7 @@ const TabBar = () => {
   const dataId = useContext(DataStateContext);
   const dispatch = useContext(DataDispatchContext);
   const isAuth = state.isAuth;
+  const [graphIndex, setGraphIndex] = useRecoilState(selectedGraphState);
 
   const handleChange = async (e: any) => {
     e.preventDefault();
@@ -92,14 +95,14 @@ const TabBar = () => {
     const formData = new FormData();
     formData.append('file', file);
     const data = await postSampleData(formData);
-    dispatch({ type: 'MODEL' });
+    // dispatch({ type: 'MODEL' });
     const generatedData = await loadModelData(data.data);
     setModelData(generatedData.data.vizspec);
-    await postModelData(data.data, generatedData.data.vizspec);
+    await saveModelData(generatedData.data.vizspec);
   };
 
   const handleClick = async (e: any) => {
-    await postModelData(dataId, modelData);
+    // save `graphIndex` image to user's list
   };
 
   useEffect(() => {
@@ -120,7 +123,7 @@ const TabBar = () => {
           </>
         )}
       </IconBarWrapper>
-      {loadData && (
+      {router.pathname.includes('recommend') && (
         <>
           <Divider />
           <ButtonBarWrapper>
