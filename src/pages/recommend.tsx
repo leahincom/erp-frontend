@@ -2,8 +2,9 @@ import { NextPageContext } from 'next';
 import React, { useState } from 'react';
 import { resetServerContext } from 'react-beautiful-dnd';
 
+import SideBar from '../components/common/SideBar';
 import Dashboard from '../components/recommend/Dashboard';
-import SideBar from '../components/recommend/SideBar';
+import { getPage } from '../lib/api/useGets';
 
 import { PageProps } from '.';
 
