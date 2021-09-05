@@ -7,6 +7,7 @@ const NoticeWrapper = styled.div`
   background: #fffaf0;
   padding: 2rem 3rem 2rem 1rem;
   width: calc(100% - 1rem);
+  height: 200px;
   color: #975a16;
 
   h3 {
@@ -14,6 +15,7 @@ const NoticeWrapper = styled.div`
   }
 
   &.errorNotice {
+    margin: 1rem;
     background: #ffe6e6;
     color: #9b2c2c;
   }

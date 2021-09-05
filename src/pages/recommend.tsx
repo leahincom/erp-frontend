@@ -1,17 +1,18 @@
 import { NextPageContext } from 'next';
-import React from 'react';
+import React, { useState } from 'react';
 import { resetServerContext } from 'react-beautiful-dnd';
 
-import { PageProps } from '..';
-import EditablePage from '../../components/common/EditablePage';
-import SideBar from '../../components/common/SideBar';
-import { getPage } from '../../lib/api/useGets/';
+import SideBar from '../components/common/SideBar';
+import Dashboard from '../components/recommend/Dashboard';
+import { getPage } from '../lib/api/useGets';
 
-const Page = ({ pid, blocks, err }: PageProps) => {
+import { PageProps } from '.';
+
+const Recommendation = ({ pid, blocks, err }: PageProps) => {
   return (
     <>
       <SideBar />
-      <EditablePage pid={pid} blocks={blocks} err={err} />
+      <Dashboard />
     </>
   );
 };
@@ -35,4 +36,4 @@ export const getServerSideProps = async (context: NextPageContext) => {
   }
 };
 
-export default Page;
+export default Recommendation;

@@ -2,10 +2,12 @@ import { NextPageContext } from 'next';
 import cookies from 'next-cookies';
 import React, { useState } from 'react';
 
-import Button from '../components/Button';
-import Card from '../components/Card';
-import Notice from '../components/Notice';
-import { PageType, DataType } from '../types/';
+import Button from '../components/common/Button';
+import Card from '../components/common/Card';
+import Notice from '../components/common/Notice';
+import { deletePage } from '../lib/api/useDeletes';
+import { getPage, getPages } from '../lib/api/useGets';
+import { PageType, DataType } from '../lib/type';
 
 interface PagesPageProps {
   pages: DataType[];
@@ -16,15 +18,7 @@ const PagesPage = ({ pages }: PagesPageProps) => {
 
   const deleteCard = async (pageId: string) => {
     try {
-      await fetch(`${process.env.NEXT_PUBLIC_API}/pages/${pageId}`, {
-        method: 'DELETE',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-      });
-      const cardIndex = cards.map((page: PageType) => page._id).indexOf(pageId);
-      const updatedCards = [...cards];
-      updatedCards.splice(cardIndex, 1);
-      setCards(updatedCards);
+      await deletePage(pageId);
     } catch (err) {
       console.log(err);
     }
@@ -35,8 +29,8 @@ const PagesPage = ({ pages }: PagesPageProps) => {
       <div id='pageList'>
         {cards.length === 0 && (
           <Notice style={{ marginBottom: '2rem' }}>
-            <h3>Let's go!</h3>
-            <p>Seems like you haven't created any pages so far.</p>
+            <h3>Let&apos;s go!</h3>
+            <p>Seems like you haven&apos;t created any pages so far.</p>
             <p>How about starting now?</p>
           </Notice>
         )}
@@ -75,19 +69,11 @@ export const getServerSideProps = async (context: NextPageContext) => {
   req && req.headers && req.headers.cookie && headers.append('Cookie', req.headers.cookie);
 
   try {
-    const data = await fetch(`${process.env.NEXT_PUBLIC_API}/pages`, {
-      method: 'GET',
-      credentials: 'include',
-      headers,
-    }).then((res) => res.json());
+    const data = await getPages(headers);
     const pageIdList = data.pages;
     const pages: PageType[] = await Promise.all(
       pageIdList.map(async (id: string) => {
-        return await fetch(`${process.env.NEXT_PUBLIC_API}/pages/${id}`, {
-          method: 'GET',
-          credentials: 'include',
-          headers,
-        }).then((res) => res.json());
+        return getPage(headers, id);
       }),
     );
 

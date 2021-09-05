@@ -1,14 +1,39 @@
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
+import styled from 'styled-components';
 
 import { usePrevious } from '../../hooks';
+import { deleteImage, updatePage } from '../../lib/api';
+import { BlockType } from '../../lib/type';
 import { PageProps } from '../../pages';
-import { BlockType } from '../../types/';
 import objectId from '../../utils/objectId';
 import setCaretToEnd from '../../utils/setCaretToEnd';
-import EditableBlock from '../EditableBlock';
-import Notice from '../Notice';
+
+import EditableBlock from './EditableBlock';
+import Notice from './Notice';
+
+const EditablePageWrapper = styled.section`
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 0 20px 0 50px;
+  width: 100%;
+  height: 100%;
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  width: 100%;
+  height: 20%;
+
+  > * {
+    margin: 0 20px;
+  }
+`;
 
 const EditablePage = ({ pid: id, blocks: fetchedBlocks, err }: PageProps) => {
   const router = useRouter();
@@ -17,24 +42,9 @@ const EditablePage = ({ pid: id, blocks: fetchedBlocks, err }: PageProps) => {
 
   const prevBlocks = usePrevious(blocks);
 
-  const updatePageOnServer = async (blocks: BlockType[]) => {
-    try {
-      await fetch(`${process.env.NEXT_PUBLIC_API}/pages/${id}`, {
-        method: 'PUT',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          blocks,
-        }),
-      });
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   useEffect(() => {
     if (prevBlocks && prevBlocks !== blocks) {
-      updatePageOnServer(blocks);
+      updatePage(blocks, id);
     }
   }, [blocks, prevBlocks]);
 
@@ -56,20 +66,6 @@ const EditablePage = ({ pid: id, blocks: fetchedBlocks, err }: PageProps) => {
     }
   }, [blocks, prevBlocks, currentBlockId]);
 
-  const deleteImageOnServer = async (imageUrl: string) => {
-    try {
-      await fetch(`${process.env.NEXT_PUBLIC_API}/pages/${imageUrl}`, {
-        method: 'DELETE',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-      }).then((res) => res.json());
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   const updateBlockHandler = (currentBlock: BlockType) => {
     const index = blocks.map((b) => b.id).indexOf(currentBlock.id);
     const oldBlock = blocks[index];
@@ -83,7 +79,7 @@ const EditablePage = ({ pid: id, blocks: fetchedBlocks, err }: PageProps) => {
     setBlocks(updatedBlocks);
 
     if (oldBlock.imageUrl && oldBlock.imageUrl !== currentBlock.imageUrl) {
-      deleteImageOnServer(oldBlock.imageUrl);
+      deleteImage(oldBlock.imageUrl);
     }
   };
 
@@ -112,7 +108,7 @@ const EditablePage = ({ pid: id, blocks: fetchedBlocks, err }: PageProps) => {
       setBlocks(updatedBlocks);
 
       if (deletedBlock.tag === 'img' && deletedBlock.imageUrl) {
-        deleteImageOnServer(deletedBlock.imageUrl);
+        deleteImage(deletedBlock.imageUrl);
       }
     }
   };
@@ -133,14 +129,7 @@ const EditablePage = ({ pid: id, blocks: fetchedBlocks, err }: PageProps) => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     try {
-      await fetch(`${process.env.NEXT_PUBLIC_API}/pages/${id}`, {
-        method: 'PUT',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          blocks,
-        }),
-      }).then((res) => res.json());
+      await updatePage(blocks, id);
       router.push('/pages');
     } catch (err) {
       console.log(err);
@@ -151,25 +140,25 @@ const EditablePage = ({ pid: id, blocks: fetchedBlocks, err }: PageProps) => {
     return (
       <Notice status='ERROR'>
         <h3>Something went wrong 💔</h3>
-        <p>Have you tried to restart the app at '/' ?</p>
+        <p>Have you tried to restart the app at &apos;/&apos; ?</p>
       </Notice>
     );
   }
 
   const isNewPublicPage = router.query.public === 'true';
   return (
-    <>
+    <EditablePageWrapper>
       {isNewPublicPage && (
         <Notice dismissible>
           <h4>Hey 👋 You just created a public page.</h4>
           <p>It will be automatically deleted after 24 hours.</p>
         </Notice>
       )}
-      <form id='save_page' onSubmit={handleSubmit}>
+      <form id='save_page' onSubmit={handleSubmit} style={{ height: '100%' }}>
         <DragDropContext onDragEnd={onDragEndHandler}>
           <Droppable droppableId={id}>
             {(provided) => (
-              <div ref={provided.innerRef} {...provided.droppableProps}>
+              <div ref={provided.innerRef} {...provided.droppableProps} style={{ height: '80%' }}>
                 {blocks.map((block: BlockType) => {
                   const position = blocks.map((b: BlockType) => b.id).indexOf(block.id) + 1;
                   return (
@@ -191,9 +180,8 @@ const EditablePage = ({ pid: id, blocks: fetchedBlocks, err }: PageProps) => {
             )}
           </Droppable>
         </DragDropContext>
-        <button type='submit'>Save</button>
       </form>
-    </>
+    </EditablePageWrapper>
   );
 };
 

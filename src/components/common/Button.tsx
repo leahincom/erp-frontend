@@ -17,7 +17,7 @@ const ButtonWrapper = styled.a`
 interface ButtonProps {
   children?: any;
   onClickHandler?: () => void;
-  href: string;
+  href?: string;
 }
 
 const Button = ({ children, onClickHandler, href }: ButtonProps) => {

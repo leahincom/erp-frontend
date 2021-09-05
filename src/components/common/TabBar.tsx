@@ -3,12 +3,14 @@ import { faColumns, faEdit, faSignInAlt, faSignOutAlt } from '@fortawesome/free-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/router';
 import React, { useContext, useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 
 import { DataDispatchContext, DataStateContext } from '../../context/DataContext';
 import { UserStateContext } from '../../context/UserContext';
-import { loadModelData, postSampleData, postModelData } from '../../lib/api';
-import { ModelType } from '../../types';
+import { loadModelData, postSampleData, saveModelData } from '../../lib/api';
+import { selectedGraphState } from '../../lib/state';
+import { ModelType } from '../../lib/type';
 
 const TabBarWrapper = styled.div`
   display: flex;
@@ -45,8 +47,7 @@ const ButtonBarWrapper = styled.span`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: 10px;
-  padding: 5px 10px;
+  margin: 5px 10px;
 `;
 
 const ButtonWrapper = styled.button`
@@ -84,6 +85,7 @@ const TabBar = () => {
   const dataId = useContext(DataStateContext);
   const dispatch = useContext(DataDispatchContext);
   const isAuth = state.isAuth;
+  const [graphIndex, setGraphIndex] = useRecoilState(selectedGraphState);
 
   const handleChange = async (e: any) => {
     e.preventDefault();
@@ -92,14 +94,16 @@ const TabBar = () => {
     const formData = new FormData();
     formData.append('file', file);
     const data = await postSampleData(formData);
-    dispatch({ type: 'MODEL' });
+    // dispatch({ type: 'MODEL' });
     const generatedData = await loadModelData(data.data);
     setModelData(generatedData.data.vizspec);
-    await postModelData(data.data, generatedData.data.vizspec);
+    await saveModelData(generatedData.data.vizspec);
   };
 
-  const handleClick = async (e: any) => {
-    await postModelData(dataId, modelData);
+  const handlePageSave = () => {};
+
+  const handleModelSave = async (e: any) => {
+    // save `graphIndex` image to user's list
   };
 
   useEffect(() => {
@@ -110,7 +114,7 @@ const TabBar = () => {
     <TabBarWrapper>
       <IconBarWrapper>
         <IconWrapper icon={faColumns} onClick={() => router.push('/')} />
-        <IconWrapper icon={faEdit} onClick={() => router.push('/make')} />
+        <IconWrapper icon={faEdit} />
         <IconWrapper icon={faLightbulb} onClick={() => router.push('/recommend')} />
         {!isAuth && <IconWrapper icon={faSignInAlt} onClick={() => router.push('/login')} />}
         {isAuth && (
@@ -120,7 +124,16 @@ const TabBar = () => {
           </>
         )}
       </IconBarWrapper>
-      {loadData && (
+      {router.pathname.includes('/p/' || '/pages') && (
+        <>
+          <Divider />
+          <ButtonBarWrapper>
+            <ButtonWrapper onClick={handlePageSave}>SAVE</ButtonWrapper>
+            <ButtonWrapper onClick={() => router.push('/')}>Go Back</ButtonWrapper>
+          </ButtonBarWrapper>
+        </>
+      )}
+      {router.pathname.includes('recommend') && (
         <>
           <Divider />
           <ButtonBarWrapper>
@@ -130,7 +143,7 @@ const TabBar = () => {
                 <InputWrapper type='file' name='file' onChange={handleChange} />
               </LabelWrapper>
             </form>
-            {modelData.length > 0 ? <ButtonWrapper onClick={handleClick}>SAVE</ButtonWrapper> : ''}
+            {modelData.length > 0 ? <ButtonWrapper onClick={handleModelSave}>SAVE</ButtonWrapper> : ''}
           </ButtonBarWrapper>
         </>
       )}

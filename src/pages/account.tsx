@@ -2,8 +2,10 @@ import { NextPageContext } from 'next';
 import cookies from 'next-cookies';
 import { useState } from 'react';
 
-import Input from '../components/Input';
-import Notice from '../components/Notice';
+import Input from '../components/common/Input';
+import Notice from '../components/common/Notice';
+import { getAccount, updateAccount } from '../lib/api';
+import { UserType } from '../lib/type';
 
 const form = {
   id: 'signup',
@@ -32,12 +34,6 @@ const form = {
   ],
 };
 
-export type UserType = {
-  name: string;
-  email: string;
-  password: string;
-};
-
 const AccountPage = (user: UserType) => {
   const RESET_NOTICE = { type: '', message: '' };
   const [notice, setNotice] = useState(RESET_NOTICE);
@@ -59,17 +55,7 @@ const AccountPage = (user: UserType) => {
     setNotice(RESET_NOTICE);
 
     try {
-      const data = await fetch(`${process.env.NEXT_PUBLIC_API}/users/account`, {
-        method: 'PUT',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          password: formData.password,
-        }),
-      }).then((res) => res.json());
-
+      const data = await updateAccount(formData);
       if (data.errCode) {
         setNotice({ type: 'ERROR', message: data.message });
       } else {
@@ -125,12 +111,7 @@ export const getServerSideProps = async (context: NextPageContext) => {
   req && req.headers && req.headers.cookie && headers.append('Cookie', req.headers.cookie);
 
   try {
-    const data = await fetch(`${process.env.NEXT_PUBLIC_API}/users/account`, {
-      method: 'GET',
-      credentials: 'include',
-      headers,
-    }).then((res) => res.json());
-
+    const data = await getAccount(headers);
     return {
       props: { user: { name: data.name, email: data.email } },
     };
