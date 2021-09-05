@@ -1,12 +1,18 @@
 import { NextPageContext } from 'next';
 import cookies from 'next-cookies';
 import { useState } from 'react';
+import styled from 'styled-components';
 
 import Input from '../components/common/Input';
 import Notice from '../components/common/Notice';
 import { getAccount } from '../lib/api/useGets';
 import { updateAccount } from '../lib/api/usePuts';
 import { UserType } from '../lib/type';
+
+const HeadingWrapper = styled.h1`
+  margin-bottom: 3rem;
+  color: var(--primary);
+`;
 
 const form = {
   id: 'signup',
@@ -70,7 +76,7 @@ const AccountPage = (user: UserType) => {
 
   return (
     <>
-      <h1 className='pageHeading'>Account</h1>
+      <HeadingWrapper>Account</HeadingWrapper>
       <form id={form.id} method='post' onSubmit={handleSubmit}>
         {form.inputs.map((input, key) => {
           return (

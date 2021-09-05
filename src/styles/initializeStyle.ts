@@ -67,11 +67,6 @@ const initializeStyle = css`
     color: inherit;
   }
 
-  h1.pageHeading {
-    margin-bottom: 3rem;
-    color: var(--primary);
-  }
-
   form {
     button {
       margin: 2rem 1rem 3rem 0;

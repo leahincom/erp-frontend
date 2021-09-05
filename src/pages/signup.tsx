@@ -2,12 +2,18 @@ import { NextPageContext } from 'next';
 import cookies from 'next-cookies';
 import { useRouter } from 'next/router';
 import React, { useContext, useState } from 'react';
+import styled from 'styled-components';
 
 import Input from '../components/common/Input';
 import Notice from '../components/common/Notice';
 import { UserDispatchContext } from '../context/UserContext';
 import { createAccount } from '../lib/api/usePosts';
 import { FormType } from '../lib/type';
+
+const HeadingWrapper = styled.h1`
+  margin-bottom: 3rem;
+  color: var(--primary);
+`;
 
 const form = {
   id: 'signup',
@@ -74,7 +80,7 @@ const SinupPage = () => {
   };
   return (
     <>
-      <h1 className='pageHeading'>Signup</h1>
+      <HeadingWrapper>Signup</HeadingWrapper>
       <form id={form.id} method='post' onSubmit={handleSubmit}>
         {form.inputs.map((input, key) => {
           return (

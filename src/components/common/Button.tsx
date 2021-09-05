@@ -3,11 +3,11 @@ import styled from 'styled-components';
 
 const ButtonWrapper = styled.a`
   display: inline-block;
+  margin: 0;
   border-radius: 0.5rem;
   background: var(--primary);
   padding: 0.4rem 1rem;
   width: auto;
-  min-width: 5rem;
   text-align: center;
   color: white;
   font-family: var(--accent);
