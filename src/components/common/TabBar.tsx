@@ -113,7 +113,7 @@ const TabBar = () => {
   return (
     <TabBarWrapper>
       <IconBarWrapper>
-        <IconWrapper icon={faColumns} onClick={() => router.push('/')} />
+        <IconWrapper icon={faColumns} onClick={() => router.push('/pages')} />
         <IconWrapper icon={faEdit} />
         <IconWrapper icon={faLightbulb} onClick={() => router.push('/recommend')} />
         {!isAuth && <IconWrapper icon={faSignInAlt} onClick={() => router.push('/login')} />}
