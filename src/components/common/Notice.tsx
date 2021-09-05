@@ -3,10 +3,12 @@ import styled, { CSSProperties } from 'styled-components';
 
 const NoticeWrapper = styled.div`
   position: relative;
+  margin: 1rem;
   border-radius: 0.5rem;
   background: #fffaf0;
   padding: 2rem 3rem 2rem 1rem;
   width: calc(100% - 1rem);
+  height: 200px;
   color: #975a16;
 
   h3 {

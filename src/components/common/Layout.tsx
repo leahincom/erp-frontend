@@ -26,6 +26,7 @@ const HeaderWrapper = styled.header`
 
 const ContentWrapper = styled.main`
   display: flex;
+  justify-content: center;
   margin-bottom: 3rem;
   width: 100%;
 `;
