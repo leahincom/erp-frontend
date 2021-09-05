@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import styled from 'styled-components';
 
 import TabBar from './TabBar';
@@ -7,8 +8,10 @@ import TabBar from './TabBar';
 const HeaderWrapper = styled.header`
   display: flex;
   position: sticky;
+  top: 0;
   align-items: center;
   justify-content: flex-end;
+  z-index: 1;
   padding: 0;
   width: 100%;
 
@@ -36,6 +39,8 @@ type ChildrenType = {
 };
 
 const Layout = ({ children }: ChildrenType) => {
+  const router = useRouter();
+
   return (
     <div id='layoutRoot'>
       <Head>

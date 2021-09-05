@@ -89,7 +89,6 @@ const MoreButtonWrapper = styled.span`
   bottom: 0;
   align-items: center;
   justify-content: center;
-  /* z-index: 5; */
   width: 5rem;
   height: 3rem;
 

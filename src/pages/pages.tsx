@@ -1,6 +1,7 @@
 import { NextPageContext } from 'next';
 import cookies from 'next-cookies';
 import React, { useState } from 'react';
+import styled from 'styled-components';
 
 import Button from '../components/common/Button';
 import Card from '../components/common/Card';
@@ -8,6 +9,15 @@ import Notice from '../components/common/Notice';
 import { deletePage } from '../lib/api/useDeletes';
 import { getPage, getPages } from '../lib/api/useGets';
 import { PageType, DataType } from '../lib/type';
+
+const PagesWrapper = styled.section`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0 20%;
+  width: 100%;
+  height: 100%;
+`;
 
 interface PagesPageProps {
   pages: DataType[];
@@ -24,33 +34,29 @@ const PagesPage = ({ pages }: PagesPageProps) => {
     }
   };
   return (
-    <>
-      <h1 className='pageHeading'>Pages</h1>
-      <div id='pageList'>
-        {cards.length === 0 && (
-          <Notice style={{ marginBottom: '2rem' }}>
-            <h3>Let&apos;s go!</h3>
-            <p>Seems like you haven&apos;t created any pages so far.</p>
-            <p>How about starting now?</p>
-          </Notice>
-        )}
-        {cards.map((page, key) => {
-          const updatedAtDate = new Date(Date.parse(page.updatedAt));
-          const pageId = page._id;
-          const blocks = page.blocks;
-          return (
-            <Card
-              key={key}
-              pageId={pageId}
-              date={updatedAtDate}
-              content={blocks}
-              deleteCard={(pageId) => deleteCard(pageId)}
-            />
-          );
-        })}
-      </div>
-      <Button href='/'>Create A New Page</Button>
-    </>
+    <PagesWrapper>
+      {cards.length === 0 && (
+        <Notice style={{ marginBottom: '2rem' }}>
+          <h3>Let&apos;s go!</h3>
+          <p>Seems like you haven&apos;t created any pages so far.</p>
+          <p>How about starting now?</p>
+        </Notice>
+      )}
+      {cards.map((page, key) => {
+        const updatedAtDate = new Date(Date.parse(page.updatedAt));
+        const pageId = page._id;
+        const blocks = page.blocks;
+        return (
+          <Card
+            key={key}
+            pageId={pageId}
+            date={updatedAtDate}
+            content={blocks}
+            deleteCard={(pageId) => deleteCard(pageId)}
+          />
+        );
+      })}
+    </PagesWrapper>
   );
 };
 

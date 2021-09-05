@@ -8,7 +8,9 @@ import styled from 'styled-components';
 
 import { DataDispatchContext, DataStateContext } from '../../context/DataContext';
 import { UserStateContext } from '../../context/UserContext';
-import { loadModelData, postSampleData, saveModelData } from '../../lib/api';
+import { loadModelData } from '../../lib/api/useGets';
+import { postSampleData } from '../../lib/api/usePosts';
+import { saveModelData } from '../../lib/api/usePuts';
 import { selectedGraphState } from '../../lib/state';
 import { ModelType } from '../../lib/type';
 
@@ -87,6 +89,10 @@ const TabBar = () => {
   const isAuth = state.isAuth;
   const [graphIndex, setGraphIndex] = useRecoilState(selectedGraphState);
 
+  const handleClickDashboard = () => {
+    isAuth ? router.push('/pages') : router.push('/');
+  };
+
   const handleChange = async (e: any) => {
     e.preventDefault();
     const file = e.target.files[0];
@@ -113,7 +119,7 @@ const TabBar = () => {
   return (
     <TabBarWrapper>
       <IconBarWrapper>
-        <IconWrapper icon={faColumns} onClick={() => router.push('/pages')} />
+        <IconWrapper icon={faColumns} onClick={handleClickDashboard} />
         <IconWrapper icon={faEdit} />
         <IconWrapper icon={faLightbulb} onClick={() => router.push('/recommend')} />
         {!isAuth && <IconWrapper icon={faSignInAlt} onClick={() => router.push('/login')} />}
@@ -124,7 +130,15 @@ const TabBar = () => {
           </>
         )}
       </IconBarWrapper>
-      {router.pathname.includes('/p/' || '/pages') && (
+      {router.pathname.includes('/pages') && (
+        <>
+          <Divider />
+          <ButtonBarWrapper>
+            <ButtonWrapper onClick={() => router.push('/')}>Create New Page</ButtonWrapper>
+          </ButtonBarWrapper>
+        </>
+      )}
+      {router.pathname.includes('/p/') && (
         <>
           <Divider />
           <ButtonBarWrapper>
@@ -143,7 +157,7 @@ const TabBar = () => {
                 <InputWrapper type='file' name='file' onChange={handleChange} />
               </LabelWrapper>
             </form>
-            {modelData.length > 0 ? <ButtonWrapper onClick={handleModelSave}>SAVE</ButtonWrapper> : ''}
+            {modelData.length > 0 && <ButtonWrapper onClick={handleModelSave}>SAVE</ButtonWrapper>}
           </ButtonBarWrapper>
         </>
       )}
