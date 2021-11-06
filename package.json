@@ -25,8 +25,11 @@
     "react-beautiful-dnd": "^13.1.0",
     "react-contenteditable": "^3.3.6",
     "react-dom": "17.0.2",
+    "react-vega": "^7.4.4",
     "recoil": "^0.4.1",
-    "styled-components": "^5.3.0"
+    "styled-components": "^5.3.0",
+    "vega": "^5.21.0",
+    "vega-lite": "^5.1.1"
   },
   "devDependencies": {
     "@croquiscom/eslint-config-www": "^1.4.0",
