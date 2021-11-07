@@ -1,26 +1,23 @@
-import { RecoilRoot, atom, selector, useRecoilState, useRecoilValue } from 'recoil';
+import { atom, selector } from 'recoil';
 
-export const loginState = atom({
+import { PlotType } from './type';
+
+export const loginState = atom<boolean>({
   key: 'login',
   default: false,
 });
 
-export const loadDataState = atom({
-  key: 'loadData',
-  default: [],
+export const userIdState = atom<string | null>({
+  key: 'userId',
+  default: null,
 });
 
-export const modelDataState = atom({
+export const modelDataState = atom<PlotType[] | null>({
   key: 'modelData',
-  default: [],
+  default: null,
 });
 
-export const modelImagesState = atom({
-  key: 'modelImages',
-  default: [],
-});
-
-export const selectedGraphState = atom({
-  key: 'selectedGraph',
-  default: -1,
+export const selectedPlotState = atom<PlotType | null>({
+  key: 'selectedPlot',
+  default: null,
 });
