@@ -1,5 +1,3 @@
-import { instance } from '..';
-
 const getPages = async (headers: Headers) => {
   try {
     const data = await fetch(`${process.env.NEXT_PUBLIC_API}/pages`, {
@@ -8,7 +6,7 @@ const getPages = async (headers: Headers) => {
       headers,
     }).then((res) => res.json());
 
-    console.log('[SUCCESS] GET pages data');
+    console.log('[SUCCESS] GET pages data', data);
 
     return data;
   } catch (err) {

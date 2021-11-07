@@ -14,7 +14,7 @@ const createAccount = async (formData: FormType) => {
       }),
     }).then((res) => res.json());
 
-    console.log('[SUCCESS] POST account data');
+    console.log('[SUCCESS] POST account data', data);
 
     return data;
   } catch (err) {

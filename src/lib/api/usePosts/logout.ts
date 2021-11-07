@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 const logout = async () => {
   try {
     const data = await fetch(`${process.env.NEXT_PUBLIC_API}/users/logout`, {
@@ -8,7 +6,7 @@ const logout = async () => {
       headers: { 'Content-Type': 'application/json' },
     });
 
-    console.log('LOGOUT');
+    console.log('LOGOUT', data);
 
     return data;
   } catch (err) {

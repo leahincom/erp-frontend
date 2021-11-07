@@ -1,8 +1,4 @@
-import axios from 'axios';
-
 import { FormType } from '../../type';
-
-// const check = typeof window === 'undefined' ? false : !window.localStorage ? false : true;
 
 const login = async (formData: FormType) => {
   try {
@@ -16,8 +12,7 @@ const login = async (formData: FormType) => {
       }),
     }).then((res) => res.json());
 
-    console.log('[SUCCESS] LOGIN');
-
+    console.log('[SUCCESS] LOGIN', data);
     return data;
   } catch (err) {
     console.log('[FAIL]', err);

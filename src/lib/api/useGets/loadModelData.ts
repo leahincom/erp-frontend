@@ -1,18 +1,16 @@
-import { baseURL, instance } from '..';
+import { MODELURL } from '..';
 
 const loadModelData = async (id: string) => {
   try {
-    const data = await fetch(`${baseURL}/inference/${id}`, {
+    const data = await fetch(`${MODELURL}/inference/${id}`, {
       method: 'GET',
-      credentials: 'include',
     }).then((res) => res.json());
 
-    console.log('[SUCCESS] GET model data');
-
+    console.log('[SUCCESS] LOAD model data', data);
     return data;
   } catch (err) {
-    console.log('[FAIL] GET model data', err);
-    alert('파일 로딩에 실패하였습니다.');
+    console.log('[FAIL] LOAD model data', err);
+    alert('모델 로딩에 실패하였습니다.');
     return null;
   }
 };

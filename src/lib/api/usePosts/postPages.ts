@@ -1,4 +1,3 @@
-import { instance } from '..';
 import { BlockType } from '../../type';
 
 const postPages = async (headers: Headers, blocks: BlockType[]) => {
@@ -12,11 +11,11 @@ const postPages = async (headers: Headers, blocks: BlockType[]) => {
       }),
     }).then((res) => res.json());
 
-    console.log('[SUCCESS] POST pages data');
+    console.log('[SUCCESS] POST pages data', data);
 
     return data;
   } catch (err) {
-    console.log('[FAIL]', err);
+    console.log('[FAIL] POST pages data', err);
   }
 };
 
