@@ -1,12 +1,14 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState, useContext } from 'react';
+import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 
 import Input from '../components/common/Input';
 import Notice from '../components/common/Notice';
 import { UserDispatchContext } from '../context/UserContext';
 import { login } from '../lib/api/usePosts';
+import { userIdState } from '../lib/state';
 import { FormType } from '../lib/type';
 
 const HeadingWrapper = styled.h1`
@@ -50,6 +52,7 @@ const LoginPage = () => {
   const router = useRouter();
 
   const [formData, setFormData] = useState<FormType>({ email: '', password: '' });
+  const setUserId = useSetRecoilState(userIdState);
 
   const handleInputChange = (id: string, value: string) => {
     setFormData({ ...formData, [id]: value });
@@ -64,6 +67,7 @@ const LoginPage = () => {
         setNotice({ type: 'ERROR', message: data.message });
       } else {
         dispatch({ type: 'LOGIN' });
+        setUserId(data.userId);
         router.push('/pages');
       }
     } catch (err) {
