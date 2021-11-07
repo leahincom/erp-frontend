@@ -9,6 +9,15 @@ import { getAccount } from '../lib/api/useGets';
 import { updateAccount } from '../lib/api/usePuts';
 import { UserType } from '../lib/type';
 
+const AccountWrapper = styled.section`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0 35%;
+  width: 100%;
+  height: 100%;
+`;
+
 const HeadingWrapper = styled.h1`
   margin-bottom: 3rem;
   color: var(--primary);
@@ -75,7 +84,7 @@ const AccountPage = (user: UserType) => {
   };
 
   return (
-    <>
+    <AccountWrapper>
       <HeadingWrapper>Account</HeadingWrapper>
       <form id={form.id} method='post' onSubmit={handleSubmit}>
         {form.inputs.map((input, key) => {
@@ -99,7 +108,7 @@ const AccountPage = (user: UserType) => {
         )}
         <button type='submit'>Update Account</button>
       </form>
-    </>
+    </AccountWrapper>
   );
 };
 

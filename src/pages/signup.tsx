@@ -10,6 +10,15 @@ import { UserDispatchContext } from '../context/UserContext';
 import { createAccount } from '../lib/api/usePosts';
 import { FormType } from '../lib/type';
 
+const SignupWrapper = styled.section`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0 35%;
+  width: 100%;
+  height: 100%;
+`;
+
 const HeadingWrapper = styled.h1`
   margin-bottom: 3rem;
   color: var(--primary);
@@ -79,7 +88,7 @@ const SinupPage = () => {
     }
   };
   return (
-    <>
+    <SignupWrapper>
       <HeadingWrapper>Signup</HeadingWrapper>
       <form id={form.id} method='post' onSubmit={handleSubmit}>
         {form.inputs.map((input, key) => {
@@ -104,7 +113,7 @@ const SinupPage = () => {
         <button type='submit'>Sign up</button>
       </form>
       <p>Sign up to create private pages that exist forever.</p>
-    </>
+    </SignupWrapper>
   );
 };
 

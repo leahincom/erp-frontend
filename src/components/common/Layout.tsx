@@ -1,6 +1,5 @@
 import Head from 'next/head';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import styled from 'styled-components';
 
 import TabBar from './TabBar';
@@ -17,7 +16,7 @@ const HeaderWrapper = styled.header`
 
   > img {
     opacity: 0.75;
-    margin: 20px;
+    margin: 20px 20px 20px 0;
     width: 1.5rem;
     height: 1.5rem;
 
@@ -32,6 +31,8 @@ const ContentWrapper = styled.main`
   justify-content: center;
   margin-bottom: 3rem;
   width: 100%;
+  height: 100%;
+  overflow-y: hidden;
 `;
 
 type ChildrenType = {
@@ -39,8 +40,6 @@ type ChildrenType = {
 };
 
 const Layout = ({ children }: ChildrenType) => {
-  const router = useRouter();
-
   return (
     <div id='layoutRoot'>
       <Head>
@@ -49,8 +48,11 @@ const Layout = ({ children }: ChildrenType) => {
         <link rel='icon' href='/favicon.ico' type='image/x-icon' />
       </Head>
       <HeaderWrapper>
-        <Link href='https://github.com/Ewha-BTS/ERP' passHref>
-          <img src='../../assets/icons/Github.svg' alt='Github Icon' />
+        <Link href='https://github.com/leahincom' passHref>
+          <img src='/assets/images/Lah.png' alt='JungHyunLah' />
+        </Link>
+        <Link href='https://github.com/yskim0' passHref>
+          <img src='/assets/images/Kim.png' width='30px' height='30px' alt='YonsooKim' />
         </Link>
       </HeaderWrapper>
       <ContentWrapper>{children}</ContentWrapper>

@@ -5,15 +5,12 @@ import { RecoilRoot } from 'recoil';
 
 import Layout from '../components/common/Layout';
 import UserProvider from '../context/UserContext';
-import { ModelType } from '../lib/type';
 import GlobalStyle from '../styles/GlobalStyle';
 import 'fontsource-nunito-sans';
 import 'fontsource-roboto';
 
 interface newAppProps extends AppProps {
   isAuthenticated: boolean;
-  loadData: File;
-  modelData: ModelType[];
 }
 
 function MyApp({ Component, pageProps, isAuthenticated }: newAppProps) {
