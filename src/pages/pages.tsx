@@ -1,6 +1,6 @@
 import { NextPageContext } from 'next';
 import cookies from 'next-cookies';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import Button from '../components/common/Button';
@@ -13,7 +13,7 @@ import { PageType, DataType } from '../lib/type';
 const PagesWrapper = styled.section`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   margin: 0 20%;
   width: 100%;
   height: 100%;
@@ -24,15 +24,8 @@ interface PagesPageProps {
 }
 
 const PagesPage = ({ pages }: PagesPageProps) => {
-  const [cards, setCards] = useState<PageType[]>(pages.length > 0 ? pages.map((data) => data.page) : []);
+  const [cards, setCards] = useState<PageType[]>(pages ? pages.map((data) => data.page) : []);
 
-  const deleteCard = async (pageId: string) => {
-    try {
-      await deletePage(pageId);
-    } catch (err) {
-      console.log(err);
-    }
-  };
   return (
     <PagesWrapper>
       {cards.length === 0 && (
@@ -46,15 +39,7 @@ const PagesPage = ({ pages }: PagesPageProps) => {
         const updatedAtDate = new Date(Date.parse(page.updatedAt));
         const pageId = page._id;
         const blocks = page.blocks;
-        return (
-          <Card
-            key={key}
-            pageId={pageId}
-            date={updatedAtDate}
-            content={blocks}
-            deleteCard={(pageId) => deleteCard(pageId)}
-          />
-        );
+        return <Card key={key} pageId={pageId} date={updatedAtDate} content={blocks} />;
       })}
     </PagesWrapper>
   );
