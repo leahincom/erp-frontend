@@ -16,9 +16,7 @@ const HeaderWrapper = styled.header`
 
   > img {
     opacity: 0.75;
-    margin: 20px 20px 20px 0;
-    width: 1.5rem;
-    height: 1.5rem;
+    margin: 20px 10px 20px 0;
 
     :hover {
       opacity: 1;
@@ -49,7 +47,7 @@ const Layout = ({ children }: ChildrenType) => {
       </Head>
       <HeaderWrapper>
         <Link href='https://github.com/leahincom' passHref>
-          <img src='/assets/images/Lah.png' alt='JungHyunLah' />
+          <img src='/assets/images/Lah.png' width='25px' height='25px' alt='JungHyunLah' />
         </Link>
         <Link href='https://github.com/yskim0' passHref>
           <img src='/assets/images/Kim.png' width='30px' height='30px' alt='YonsooKim' />
