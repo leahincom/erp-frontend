@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const MenuBarWrapper = styled.div<{ x: number; y: number }>`
+const MenuBarWrapper = styled.div<{ x: number | null; y: number | null }>`
   position: absolute;
   top: ${({ y }) => y};
   left: ${({ x }) => x};
@@ -70,8 +70,8 @@ interface ActionMenuProps {
 }
 
 const ActionMenu = ({ position, actions }: ActionMenuProps) => {
-  const x = position.x - MENU_WIDTH / 2;
-  const y = position.y - MENU_HEIGHT - 10;
+  const x = position.x ? position.x - MENU_WIDTH / 2 : null;
+  const y = position.y ? position.y - MENU_HEIGHT - 10 : null;
 
   return (
     <MenuBarWrapper x={x} y={y}>
