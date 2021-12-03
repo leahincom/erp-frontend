@@ -3,7 +3,7 @@ import cookies from 'next-cookies';
 import Router from 'next/router';
 import { useEffect } from 'react';
 
-import { logout } from '../lib/api/usePosts';
+import { logout } from '../lib/api/post';
 
 const LogoutPage = () => {
   useEffect(() => {
@@ -17,7 +17,7 @@ const LogoutPage = () => {
       }
     };
     logoutOnServer();
-  }, []);
+  });
 
   return null;
 };

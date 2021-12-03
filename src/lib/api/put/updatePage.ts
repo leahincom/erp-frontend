@@ -1,9 +1,9 @@
-import { instance } from '..';
+import { BASEURL } from '..';
 import { BlockType } from '../../type';
 
 const updatePage = async (blocks: BlockType[], id: string) => {
   try {
-    const data = await fetch(`${process.env.NEXT_PUBLIC_API}/pages/${id}`, {
+    const data = await fetch(`${BASEURL}/pages/${id}`, {
       method: 'PUT',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },

@@ -5,7 +5,7 @@ import { resetServerContext } from 'react-beautiful-dnd';
 import { PageProps } from '..';
 import EditablePage from '../../components/common/EditablePage';
 import SideBar from '../../components/common/SideBar';
-import { getPage } from '../../lib/api/useGets/';
+import { getPage } from '../../lib/api/get';
 
 const Page = ({ pid, blocks, err }: PageProps) => {
   return (

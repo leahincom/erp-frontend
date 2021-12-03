@@ -1,6 +1,5 @@
 import { MODELURL } from '..';
-
-import { PlotType } from './../../type';
+import { PlotType } from '../../type';
 
 const savePlot = async (fileId: string, plot: PlotType) => {
   try {

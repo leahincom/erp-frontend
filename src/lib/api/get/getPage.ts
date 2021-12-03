@@ -1,6 +1,8 @@
+import { BASEURL } from '..';
+
 const getPage = async (headers: Headers, id: string | string[] | undefined) => {
   try {
-    const data = await fetch(`${process.env.NEXT_PUBLIC_API}/pages/${id}`, {
+    const data = await fetch(`${BASEURL}/pages/${id}`, {
       method: 'GET',
       credentials: 'include',
       headers,

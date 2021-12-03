@@ -1,10 +1,10 @@
-import DOMPurify from 'dompurify';
+import DOMPurify from 'isomorphic-dompurify';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import { deletePage } from '../../lib/api/useDeletes';
+import { deletePage } from '../../lib/api/delete';
 import { BlockType } from '../../lib/type';
 
 import ContextMenu from './ContextMenu';

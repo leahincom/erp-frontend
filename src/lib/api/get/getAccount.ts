@@ -1,6 +1,7 @@
+import { BASEURL } from '..';
 const getAccount = async (headers: Headers) => {
   try {
-    const data = await fetch(`${process.env.NEXT_PUBLIC_API}/users/account`, {
+    const data = await fetch(`${BASEURL}/users/account`, {
       method: 'GET',
       credentials: 'include',
       headers,

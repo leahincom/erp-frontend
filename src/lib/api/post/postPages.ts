@@ -1,8 +1,9 @@
+import { BASEURL } from '..';
 import { BlockType } from '../../type';
 
 const postPages = async (headers: Headers, blocks: BlockType[]) => {
   try {
-    const data = await fetch(`${process.env.NEXT_PUBLIC_API}/pages`, {
+    const data = await fetch(`${BASEURL}/pages`, {
       method: 'POST',
       credentials: 'include',
       headers,

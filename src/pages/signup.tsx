@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import Input from '../components/common/Input';
 import Notice from '../components/common/Notice';
 import { UserDispatchContext } from '../context/UserContext';
-import { createAccount } from '../lib/api/usePosts';
+import { createAccount } from '../lib/api/post';
 import { FormType } from '../lib/type';
 
 const SignupWrapper = styled.section`

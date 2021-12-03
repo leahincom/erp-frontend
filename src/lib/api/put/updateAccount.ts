@@ -1,10 +1,10 @@
-import { instance } from '..';
+import { BASEURL } from '..';
 import { FormType } from '../../type';
 
-const createAccount = async (formData: FormType) => {
+const updateAccount = async (formData: FormType) => {
   try {
-    const data = await fetch(`${process.env.NEXT_PUBLIC_API}/users/signup`, {
-      method: 'POST',
+    const data = await fetch(`${BASEURL}/users/account`, {
+      method: 'PUT',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -14,7 +14,7 @@ const createAccount = async (formData: FormType) => {
       }),
     }).then((res) => res.json());
 
-    console.log('[SUCCESS] POST account data', data);
+    console.log('[SUCCESS] PUT account data');
 
     return data;
   } catch (err) {
@@ -22,4 +22,4 @@ const createAccount = async (formData: FormType) => {
   }
 };
 
-export default createAccount;
+export default updateAccount;

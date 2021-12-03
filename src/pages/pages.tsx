@@ -1,13 +1,11 @@
 import { NextPageContext } from 'next';
 import cookies from 'next-cookies';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import Button from '../components/common/Button';
 import Card from '../components/common/Card';
 import Notice from '../components/common/Notice';
-import { deletePage } from '../lib/api/useDeletes';
-import { getPage, getPages } from '../lib/api/useGets';
+import { getPage, getPages } from '../lib/api/get';
 import { PageType, DataType } from '../lib/type';
 
 const PagesWrapper = styled.section`

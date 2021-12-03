@@ -5,8 +5,8 @@ import styled from 'styled-components';
 
 import Input from '../components/common/Input';
 import Notice from '../components/common/Notice';
-import { getAccount } from '../lib/api/useGets';
-import { updateAccount } from '../lib/api/usePuts';
+import { getAccount } from '../lib/api/get';
+import { updateAccount } from '../lib/api/put';
 import { UserType } from '../lib/type';
 
 const AccountWrapper = styled.section`

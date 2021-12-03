@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import Input from '../components/common/Input';
 import Notice from '../components/common/Notice';
 import { UserDispatchContext } from '../context/UserContext';
-import { login } from '../lib/api/usePosts';
+import { login } from '../lib/api/post';
 import { userIdState } from '../lib/state';
 import { FormType } from '../lib/type';
 

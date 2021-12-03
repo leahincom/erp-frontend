@@ -1,6 +1,7 @@
+import { BASEURL } from '..';
 const logout = async () => {
   try {
-    const data = await fetch(`${process.env.NEXT_PUBLIC_API}/users/logout`, {
+    const data = await fetch(`${BASEURL}/users/logout`, {
       method: 'POST',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },

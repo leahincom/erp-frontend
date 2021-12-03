@@ -1,6 +1,7 @@
+import { BASEURL } from '..';
 const uploadImage = async (pageId: string, formData: FormData) => {
   try {
-    const data = await fetch(`${process.env.NEXT_PUBLIC_API}/pages/images?pageId=${pageId}`, {
+    const data = await fetch(`${BASEURL}/pages/images?pageId=${pageId}`, {
       method: 'POST',
       credentials: 'include',
       body: formData,
