@@ -2,9 +2,8 @@
 import React, { RefObject } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import ContentEditable from 'react-contenteditable';
-import styled from 'styled-components';
 
-import { uploadImage } from '../../lib/api';
+import { uploadImage } from '../../lib/api/post';
 import { StateType } from '../../lib/type';
 import { setCaretToEnd, getCaretCoordinates, getSelection } from '../../utils/';
 
@@ -211,7 +210,7 @@ class EditableBlock extends React.Component<any, StateType> {
       ...this.state,
       htmlBackup: null,
       tagSelectorMenuPosition: { x: null, y: null },
-      tagSelectorMenuOpen: true,
+      tagSelectorMenuOpen: false,
     });
     document.removeEventListener('click', this.closeTagSelectorMenu, false);
   }
@@ -367,22 +366,23 @@ class EditableBlock extends React.Component<any, StateType> {
                     this.state.actionMenuOpen || this.state.tagSelectorMenuOpen ? 'blockSelected' : null,
                   ].join(' ')}
                 >
-                  <input
+                  {<img src='/assets/images/Plot0.jpeg' alt='plot' />}
+                  {/* <input
                     id={`${this.props.id}_fileInput`}
                     name={this.state.tag}
                     type='file'
                     onChange={this.handleImageUpload}
                     ref={(ref) => (this.fileInput = ref)}
                     hidden
-                  />
-                  {!this.state.imageUrl && (
+                  /> */}
+                  {/* {!this.state.imageUrl && (
                     <label htmlFor={`${this.props.id}_fileInput`} className='fileInputLabel'>
                       No Image Selected. Click To Select.
                     </label>
                   )}
                   {this.state.imageUrl && (
                     <img src={process.env.NEXT_PUBLIC_API + '/' + this.state.imageUrl} alt={this.state.imageUrl} />
-                  )}
+                  )} */}
                 </div>
               )}
               <span

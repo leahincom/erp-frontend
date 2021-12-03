@@ -1,32 +1,39 @@
 import React from 'react';
-import { useRecoilState } from 'recoil';
+import { VegaLite } from 'react-vega';
+import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
-import vegaEmbed from 'vega-embed';
 
-import { modelImagesState, selectedGraphState } from '../../lib/state';
+import { selectedPlotState } from '../../lib/state';
 
 const DashboardWrapper = styled.div`
   display: flex;
   position: relative;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
+  padding-top: 50px;
   width: 100%;
   height: 100%;
 `;
 
 const Dashboard = () => {
-  const [modelImages, setModelImages] = useRecoilState(modelImagesState);
-  const [graphIndex, setGraphIndex] = useRecoilState(selectedGraphState);
+  const selectedPlot = useRecoilValue(selectedPlotState);
 
   return (
     <DashboardWrapper>
-      {/* {loadData.map(async (data, idx) => {
-        return await (<Graph key={idx} idx={idx} />);
-      })}
-      const graph = [data];
-    */}
-      {/* {loadData.forEach((data) => vegaEmbed(`.recBar__body`, data))} */}
-      {graphIndex > -1 && modelImages[graphIndex]}
+      {selectedPlot && (
+        <VegaLite
+          spec={{
+            description: 'recommended data',
+            mark: selectedPlot.mark,
+            encoding: JSON.parse(JSON.stringify(selectedPlot.encoding)),
+            data: { name: 'table' },
+            padding: 5,
+            width: 500,
+            height: 500,
+          }}
+          data={{ table: JSON.parse(JSON.stringify(selectedPlot.data.values)) }}
+        />
+      )}
     </DashboardWrapper>
   );
 };

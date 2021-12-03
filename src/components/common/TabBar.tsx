@@ -2,15 +2,15 @@ import { faLightbulb, faUser } from '@fortawesome/free-regular-svg-icons';
 import { faColumns, faEdit, faSignInAlt, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/router';
-import React, { useContext, useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
+import React, { useContext, useState } from 'react';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
-import { DataDispatchContext, DataStateContext } from '../../context/DataContext';
 import { UserStateContext } from '../../context/UserContext';
-import { loadModelData, postSampleData, saveModelData } from '../../lib/api';
-import { selectedGraphState } from '../../lib/state';
-import { ModelType } from '../../lib/type';
+import { loadModelData } from '../../lib/api/get';
+import { uploadData } from '../../lib/api/post';
+import savePlot from '../../lib/api/post/savePlot';
+import { modelDataState, selectedPlotState, userIdState } from '../../lib/state';
 
 const TabBarWrapper = styled.div`
   display: flex;
@@ -80,40 +80,40 @@ const InputWrapper = styled.input`
 const TabBar = () => {
   const state = useContext(UserStateContext);
   const router = useRouter();
-  const [loadData, setLoadData] = useState<ModelType[]>();
-  const [modelData, setModelData] = useState<ModelType[]>([{ x: '0' }]);
-  const dataId = useContext(DataStateContext);
-  const dispatch = useContext(DataDispatchContext);
+  const [fileId, setFileId] = useState<string | null>(null);
+  const [modelData, setModelData] = useRecoilState(modelDataState);
+  const selectedPlot = useRecoilValue(selectedPlotState);
+  const userId = useRecoilValue(userIdState);
   const isAuth = state.isAuth;
-  const [graphIndex, setGraphIndex] = useRecoilState(selectedGraphState);
 
-  const handleChange = async (e: any) => {
-    e.preventDefault();
-    const file = e.target.files[0];
-    setLoadData(file);
-    const formData = new FormData();
-    formData.append('file', file);
-    const data = await postSampleData(formData);
-    // dispatch({ type: 'MODEL' });
-    const generatedData = await loadModelData(data.data);
-    setModelData(generatedData.data.vizspec);
-    await saveModelData(generatedData.data.vizspec);
+  const handleClickDashboard = () => {
+    isAuth ? router.push('/pages') : router.push('/');
   };
 
-  const handlePageSave = () => {};
-
-  const handleModelSave = async (e: any) => {
-    // save `graphIndex` image to user's list
+  const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files ? e.target.files[0] : null;
+    if (file) {
+      const formData = new FormData();
+      userId && formData.append('user_id', userId);
+      e.target.files && formData.append('file', e.target.files[0]);
+      if (userId) {
+        const loadData = await uploadData(formData);
+        setFileId(loadData.fileId);
+        const generatedData = await loadModelData(loadData.fileId);
+        setModelData(generatedData.plots);
+      }
+    }
+    e.target.value = '';
   };
 
-  useEffect(() => {
-    console.log(dataId);
-  }, [dataId]);
+  const handlePlotSave = async () => {
+    fileId && selectedPlot && (await savePlot(fileId, selectedPlot));
+  };
 
   return (
     <TabBarWrapper>
       <IconBarWrapper>
-        <IconWrapper icon={faColumns} onClick={() => router.push('/')} />
+        <IconWrapper icon={faColumns} onClick={handleClickDashboard} />
         <IconWrapper icon={faEdit} />
         <IconWrapper icon={faLightbulb} onClick={() => router.push('/recommend')} />
         {!isAuth && <IconWrapper icon={faSignInAlt} onClick={() => router.push('/login')} />}
@@ -124,26 +124,32 @@ const TabBar = () => {
           </>
         )}
       </IconBarWrapper>
-      {router.pathname.includes('/p/' || '/pages') && (
+      {router.pathname.includes('/pages') && (
         <>
           <Divider />
           <ButtonBarWrapper>
-            <ButtonWrapper onClick={handlePageSave}>SAVE</ButtonWrapper>
-            <ButtonWrapper onClick={() => router.push('/')}>Go Back</ButtonWrapper>
+            <ButtonWrapper onClick={() => router.push('/')}>Create New Page</ButtonWrapper>
           </ButtonBarWrapper>
         </>
       )}
-      {router.pathname.includes('recommend') && (
+      {router.pathname.includes('/p/') && (
         <>
           <Divider />
           <ButtonBarWrapper>
-            <form>
-              <LabelWrapper>
-                LOAD
-                <InputWrapper type='file' name='file' onChange={handleChange} />
-              </LabelWrapper>
-            </form>
-            {modelData.length > 0 ? <ButtonWrapper onClick={handleModelSave}>SAVE</ButtonWrapper> : ''}
+            <ButtonWrapper onClick={() => router.push('/pages')}>SAVE</ButtonWrapper>
+            <ButtonWrapper onClick={() => router.back()}>Go Back</ButtonWrapper>
+          </ButtonBarWrapper>
+        </>
+      )}
+      {router.pathname.includes('/recommend') && (
+        <>
+          <Divider />
+          <ButtonBarWrapper>
+            <LabelWrapper>
+              LOAD
+              <InputWrapper type='file' name='file' onChange={handleChange} onClick={(e) => (e.target.value = '')} />
+            </LabelWrapper>
+            {selectedPlot && <ButtonWrapper onClick={handlePlotSave}>SAVE</ButtonWrapper>}
           </ButtonBarWrapper>
         </>
       )}

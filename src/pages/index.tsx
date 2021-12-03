@@ -1,7 +1,7 @@
 import type { NextPageContext } from 'next';
 
 import EditablePage from '../components/common/EditablePage';
-import { postPages } from '../lib/api';
+import { postPages } from '../lib/api/post';
 import { BlockType } from '../lib/type';
 import objectId from '../utils/objectId';
 

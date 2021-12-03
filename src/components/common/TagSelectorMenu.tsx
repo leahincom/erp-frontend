@@ -2,7 +2,7 @@ import { matchSorter } from 'match-sorter';
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
-const MenuBarWrapper = styled.div<{ x: number; y: number; isMenuOutsideOfTopViewport: boolean }>`
+const MenuBarWrapper = styled.div<{ x: number | null; y: number | null; isMenuOutsideOfTopViewport: boolean }>`
   display: flex;
   position: absolute;
   top: ${({ y }) => y};
@@ -95,9 +95,9 @@ const TagSelectorMenu = ({ position, closeMenu, handleSelection }: TagSelectorMe
   const [selectedTag, setSeletedTag] = useState(0);
   const [command, setCommand] = useState('');
 
-  const isMenuOutsideOfTopViewport = position.y - MENU_HEIGHT < 0;
-  const y = !isMenuOutsideOfTopViewport ? position.y - MENU_HEIGHT : position.y + MENU_HEIGHT / 3;
-  const x = position.x;
+  const isMenuOutsideOfTopViewport = position.y ? position.y - MENU_HEIGHT < 0 : false;
+  const y = position.y ? (!isMenuOutsideOfTopViewport ? position.y - MENU_HEIGHT : position.y + MENU_HEIGHT / 3) : null;
+  const x = position.x ? position.x : null;
 
   useEffect(() => {
     setTagList(matchSorter(allowedTags, command, { keys: ['tag'] }));

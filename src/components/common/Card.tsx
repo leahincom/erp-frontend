@@ -1,9 +1,10 @@
-import DOMPurify from 'dompurify';
+import DOMPurify from 'isomorphic-dompurify';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
+import { deletePage } from '../../lib/api/delete';
 import { BlockType } from '../../lib/type';
 
 import ContextMenu from './ContextMenu';
@@ -12,7 +13,10 @@ const CardBarWrapper = styled.div`
   position: relative;
   margin: 2rem 0;
   width: calc(100% - 1rem);
-  height: 100%;
+
+  :hover {
+    cursor: pointer;
+  }
 `;
 
 const CardWrapper = styled.article`
@@ -85,16 +89,16 @@ const ContentWrapper = styled.div`
 const MoreButtonWrapper = styled.span`
   display: flex;
   position: absolute;
-  right: 0;
-  bottom: 0;
+  right: 1rem;
+  bottom: 1rem;
   align-items: center;
   justify-content: center;
-  /* z-index: 5; */
-  width: 5rem;
-  height: 3rem;
+  width: 4rem;
+  height: 2rem;
 
   :hover {
-    cursor: pointer;
+    border-radius: 3rem;
+    background-color: #8f8f8f88;
   }
 `;
 
@@ -104,10 +108,9 @@ interface CardProps {
   pageId: string;
   date: Date;
   content: BlockType[];
-  deleteCard: (id: string) => void;
 }
 
-const Card = ({ pageId, date, content, deleteCard }: CardProps) => {
+const Card = ({ pageId, date, content }: CardProps) => {
   const router = useRouter();
   const [isContextMenuOpen, setIsContextMenuOpen] = useState(false);
 
@@ -119,9 +122,10 @@ const Card = ({ pageId, date, content, deleteCard }: CardProps) => {
     router.push('/p/[pid]', `/p/${id}`);
   };
 
-  const deletePage = (id: string) => {
+  const deleteCard = async (id: string) => {
     setIsContextMenuOpen(false);
-    deleteCard(id);
+    await deletePage(id);
+    router.reload();
   };
 
   const toggleContextMenu = () => {
@@ -152,7 +156,7 @@ const Card = ({ pageId, date, content, deleteCard }: CardProps) => {
         <ContextMenu
           menuItems={[
             { id: 'edit', label: 'Edit', action: () => forwardToPage(pageId) },
-            { id: 'delete', label: 'Delete', action: () => deletePage(pageId) },
+            { id: 'delete', label: 'Delete', action: () => deleteCard(pageId) },
           ]}
           closeAction={() => closeContextMenu}
         />

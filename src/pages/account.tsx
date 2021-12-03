@@ -1,11 +1,27 @@
 import { NextPageContext } from 'next';
 import cookies from 'next-cookies';
 import { useState } from 'react';
+import styled from 'styled-components';
 
 import Input from '../components/common/Input';
 import Notice from '../components/common/Notice';
-import { getAccount, updateAccount } from '../lib/api';
+import { getAccount } from '../lib/api/get';
+import { updateAccount } from '../lib/api/put';
 import { UserType } from '../lib/type';
+
+const AccountWrapper = styled.section`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0 35%;
+  width: 100%;
+  height: 100%;
+`;
+
+const HeadingWrapper = styled.h1`
+  margin-bottom: 3rem;
+  color: var(--primary);
+`;
 
 const form = {
   id: 'signup',
@@ -68,8 +84,8 @@ const AccountPage = (user: UserType) => {
   };
 
   return (
-    <>
-      <h1 className='pageHeading'>Account</h1>
+    <AccountWrapper>
+      <HeadingWrapper>Account</HeadingWrapper>
       <form id={form.id} method='post' onSubmit={handleSubmit}>
         {form.inputs.map((input, key) => {
           return (
@@ -92,7 +108,7 @@ const AccountPage = (user: UserType) => {
         )}
         <button type='submit'>Update Account</button>
       </form>
-    </>
+    </AccountWrapper>
   );
 };
 

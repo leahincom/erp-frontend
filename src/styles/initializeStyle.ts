@@ -28,7 +28,6 @@ const initializeStyle = css`
     display: grid;
     position: relative;
     grid-template-rows: auto 1fr auto;
-    grid-template-columns: 100%;
     justify-items: center;
     min-height: 100%;
   }
@@ -65,11 +64,6 @@ const initializeStyle = css`
   a {
     text-decoration: none;
     color: inherit;
-  }
-
-  h1.pageHeading {
-    margin-bottom: 3rem;
-    color: var(--primary);
   }
 
   form {

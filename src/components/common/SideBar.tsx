@@ -1,8 +1,13 @@
+/* eslint-disable indent */
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { VegaLite, VisualizationSpec } from 'react-vega';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 
-import { modelDataState, modelImagesState } from '../../lib/state';
+import { getSavedPlots, getUploadHistory } from '../../lib/api/get';
+import { modelDataState, selectedPlotState, userIdState } from '../../lib/state';
+import { PlotType, PlotDataType, FileType } from '../../lib/type';
 
 const SideBarWrapper = styled.section`
   display: flex;
@@ -13,8 +18,14 @@ const SideBarWrapper = styled.section`
   border-top-right-radius: 50px;
   border-bottom-right-radius: 50px;
   background: #f4f6fc;
-  width: 30%;
+  width: 40%;
   height: 100%;
+  /* overflow-y: scroll; */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  ::-webkit-scrollbar {
+    display: none;
+  }
 
   &.shrink {
     width: 10%;
@@ -44,106 +55,125 @@ const DataWrapper = styled.div`
   height: 100%;
 `;
 
-const ImageWrapper = styled.img`
-  transition: all 2s linear;
-  margin: 10px;
+const OptionWrapper = styled.div`
+  width: 100%;
+  font-size: 14px;
+  font-weight: 700;
+`;
+
+const VegaLiteWrapper = styled.div`
+  padding-bottom: 1rem;
+
+  :hover {
+    cursor: pointer;
+  }
 `;
 
 const SideBar = () => {
-  const [modelData, setModelData] = useRecoilState(modelDataState);
-
-  const [modelImages, setModelImages] = useRecoilState(modelImagesState);
-  const [isVisible, setIsVisible] = useState(true);
+  const modelData = useRecoilValue(modelDataState);
+  const setSelectedPlot = useSetRecoilState(selectedPlotState);
+  const [isVisible, setIsVisible] = useState(false);
+  const [spec, setSpec] = useState<VisualizationSpec[] | null>(null);
+  const [values, setValues] = useState<PlotDataType[] | null>(null);
+  const [fileList, setFileList] = useState<FileType[] | null>();
+  const [fileId, setFileId] = useState<string | null>();
+  const [savedPlots, setSavedPlots] = useState<PlotType[] | null>();
+  const userId = useRecoilValue(userIdState);
+  const router = useRouter();
 
   useEffect(() => {
-    const encodeData = () => {
-      // get image from plot code (data)
-      const plots = modelData.map((data, idx) => {
-        // await vegaEmbed(`.recBar__body--graph${idx}`, data);
-      });
-      setModelImages(plots);
+    const getFiles = async () => {
+      if (userId) {
+        const files = await getUploadHistory(userId);
+        setFileList(files);
+      }
     };
-    encodeData();
+    if (router.pathname.includes('/p/')) {
+      getFiles();
+    }
+  }, [userId]);
+
+  useEffect(() => {
+    const tempSpec: VisualizationSpec[] = [];
+    const tempValues: PlotDataType[] = [];
+    modelData?.forEach((plot: PlotType) => {
+      tempSpec.push({
+        description: 'recommended data',
+        mark: plot.mark,
+        encoding: JSON.parse(JSON.stringify(plot.encoding)),
+        data: { name: 'table' },
+        padding: 5,
+      });
+      tempValues.push({ table: JSON.parse(JSON.stringify(plot.data.values)) });
+    });
+    setSpec(tempSpec);
+    setValues(tempValues);
+    setIsVisible(true);
   }, [modelData]);
 
-  // const handleClick = (e) => {
-  //   console.log(e);
-  //   document.querySelectorAll('.selected').forEach((el) => el.classList.remove('selected'));
-  //   e.target.classList.add('selected');
-  //   e.target.classList[0] === 'div.recBar__title--recommend'
-  //     ? document.querySelector('.recBar__body--recommend').classList.add('selected')
-  //     : document.querySelector('.recBar__body--edit').classList.add('selected');
-  // };
+  const handleFileClick = async (id: string) => {
+    setFileId(id);
+    const plots = await getSavedPlots(id);
+    setSavedPlots(plots);
+  };
 
-  // const encodeData = () => {
-  //   loadData.forEach(async (data, idx) => {
-  //     await vegaEmbed(`.recBar__body--graph${idx}`, data);
-  //   });
-  // };
+  useEffect(() => {
+    const tempSpec: VisualizationSpec[] = [];
+    const tempValues: PlotDataType[] = [];
+    savedPlots?.forEach((plot: PlotType) => {
+      tempSpec.push({
+        description: 'saved plots',
+        mark: plot.mark,
+        encoding: JSON.parse(JSON.stringify(plot.encoding)),
+        data: { name: 'table' },
+        padding: 5,
+      });
+      tempValues.push({ table: JSON.parse(JSON.stringify(plot.data.values)) });
+    });
+    setSpec(tempSpec);
+    setValues(tempValues);
+    setIsVisible(true);
+  }, [savedPlots]);
+
+  const handlePlotClick = (idx: number) => {
+    modelData && setSelectedPlot(modelData[idx]);
+    window.scroll({
+      top: 0,
+      left: 0,
+      behavior: 'smooth',
+    });
+  };
 
   return (
     <SideBarWrapper className={[!isVisible && 'shrink'].join(' ')}>
-      {/* <TitleWrapper>
-        // useRef, ref 사용해보기
-        <div className='recBar__title--recommend selected' onClick={handleClick}>
-            Recommended
-            </div>
-            {loadData ? (
-              <div className='recBar__title--edit' onClick={handleClick}>
-              Edit Plot
-              </div>
-              ) : (
-                <></>
-              )}
-      </TitleWrapper> */}
-
       <IconWrapper onClick={() => setIsVisible(!isVisible)}>
         <img src='/assets/icons/FoldArrow.svg' />
       </IconWrapper>
       <DataWrapper>
-        {isVisible &&
-          modelImages.map((plot, key) => {
-            return <ImageWrapper src={plot} key={key} />;
-          })}
+        {router.pathname.includes('/p/') && fileList && !fileId
+          ? fileList.map((file: FileType) => (
+              <OptionWrapper key={file.id} onClick={() => handleFileClick(file.id)}>
+                {file.name}
+              </OptionWrapper>
+            ))
+          : spec &&
+            values &&
+            spec.map((info, idx) => (
+              <VegaLiteWrapper key={idx} onClick={() => handlePlotClick(idx)}>
+                <VegaLite spec={info} data={values[idx]} />
+              </VegaLiteWrapper>
+            ))}
+        {router.pathname.includes('/recommend') &&
+          spec &&
+          values &&
+          spec.map((info, idx) => (
+            <VegaLiteWrapper key={idx} onClick={() => handlePlotClick(idx)}>
+              <VegaLite spec={info} data={values[idx]} />
+            </VegaLiteWrapper>
+          ))}
       </DataWrapper>
     </SideBarWrapper>
   );
 };
 
 export default SideBar;
-
-const TitleWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  cursor: pointer;
-  width: 95%;
-
-  /* &--recommend {
-    margin-right: 0;margin-right
-  }
-
-  &--edit {
-    margin-left: 0;margin-left
-  }
-
-  .selected {
-    background-color: rgb(91.8%, 92.4%, 93.7%);background-color
-  } */
-`;
-
-const Title = styled.title`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0.5rem;
-  margin-bottom: 0;
-  border-radius: 5px;
-  background-color: rgb(86.2%, 87.3%, 89.8%);
-  padding: 1rem;
-  width: 50%;
-  font-weight: bold;
-
-  &:hover {
-    background-color: rgb(77.4%, 79.7%, 86.6%);
-  }
-`;

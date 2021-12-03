@@ -2,12 +2,27 @@ import { NextPageContext } from 'next';
 import cookies from 'next-cookies';
 import { useRouter } from 'next/router';
 import React, { useContext, useState } from 'react';
+import styled from 'styled-components';
 
 import Input from '../components/common/Input';
 import Notice from '../components/common/Notice';
 import { UserDispatchContext } from '../context/UserContext';
-import { createAccount } from '../lib/api';
+import { createAccount } from '../lib/api/post';
 import { FormType } from '../lib/type';
+
+const SignupWrapper = styled.section`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0 35%;
+  width: 100%;
+  height: 100%;
+`;
+
+const HeadingWrapper = styled.h1`
+  margin-bottom: 3rem;
+  color: var(--primary);
+`;
 
 const form = {
   id: 'signup',
@@ -73,8 +88,8 @@ const SinupPage = () => {
     }
   };
   return (
-    <>
-      <h1 className='pageHeading'>Signup</h1>
+    <SignupWrapper>
+      <HeadingWrapper>Signup</HeadingWrapper>
       <form id={form.id} method='post' onSubmit={handleSubmit}>
         {form.inputs.map((input, key) => {
           return (
@@ -98,7 +113,7 @@ const SinupPage = () => {
         <button type='submit'>Sign up</button>
       </form>
       <p>Sign up to create private pages that exist forever.</p>
-    </>
+    </SignupWrapper>
   );
 };
 

@@ -25,7 +25,7 @@ const MenuWrapper = styled.div`
 `;
 
 const ItemWrapper = styled.button`
-  border-bottom: 1px solid var(--secondary);
+  border-bottom: 2px solid #e3e3e3;
   padding: 0.5rem 1rem;
   font-family: var(--accent);
   font-size: 0.875rem;
@@ -37,18 +37,19 @@ const ItemWrapper = styled.button`
 
   :hover,
   :focus {
-    background: $tertiary;
+    background: var(--tertiary);
     cursor: pointer;
   }
 
-  :first-of-type:hover,
-  :first-of-type:focus {
+  :first-of-type {
+    border: none;
+    border-bottom: 2px solid #e3e3e3;
     border-top-left-radius: 0.5rem;
     border-top-right-radius: 0.5rem;
   }
 
-  :last-of-type:hover,
-  :last-of-type:focus {
+  :last-of-type {
+    border: none;
     border-bottom-left-radius: 0.5rem;
     border-bottom-right-radius: 0.5rem;
   }
