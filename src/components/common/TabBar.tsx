@@ -7,9 +7,9 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
 import { UserStateContext } from '../../context/UserContext';
-import { loadModelData } from '../../lib/api/useGets';
-import { uploadData } from '../../lib/api/usePosts';
-import savePlot from '../../lib/api/usePosts/savePlot';
+import { loadModelData } from '../../lib/api/get';
+import { uploadData } from '../../lib/api/post';
+import savePlot from '../../lib/api/post/savePlot';
 import { modelDataState, selectedPlotState, userIdState } from '../../lib/state';
 
 const TabBarWrapper = styled.div`
@@ -103,7 +103,7 @@ const TabBar = () => {
         setModelData(generatedData.plots);
       }
     }
-    e.target.files = null;
+    e.target.value = '';
   };
 
   const handlePlotSave = async () => {
@@ -145,12 +145,10 @@ const TabBar = () => {
         <>
           <Divider />
           <ButtonBarWrapper>
-            <form>
-              <LabelWrapper>
-                LOAD
-                <InputWrapper type='file' name='file' onChange={handleChange} />
-              </LabelWrapper>
-            </form>
+            <LabelWrapper>
+              LOAD
+              <InputWrapper type='file' name='file' onChange={handleChange} onClick={(e) => (e.target.value = '')} />
+            </LabelWrapper>
             {selectedPlot && <ButtonWrapper onClick={handlePlotSave}>SAVE</ButtonWrapper>}
           </ButtonBarWrapper>
         </>

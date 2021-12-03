@@ -2,10 +2,10 @@
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { VegaLite, VisualizationSpec } from 'react-vega';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 
-import { getSavedPlots, getUploadHistory } from '../../lib/api/useGets';
+import { getSavedPlots, getUploadHistory } from '../../lib/api/get';
 import { modelDataState, selectedPlotState, userIdState } from '../../lib/state';
 import { PlotType, PlotDataType, FileType } from '../../lib/type';
 
@@ -72,7 +72,7 @@ const VegaLiteWrapper = styled.div`
 const SideBar = () => {
   const modelData = useRecoilValue(modelDataState);
   const setSelectedPlot = useSetRecoilState(selectedPlotState);
-  const [isVisible, setIsVisible] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
   const [spec, setSpec] = useState<VisualizationSpec[] | null>(null);
   const [values, setValues] = useState<PlotDataType[] | null>(null);
   const [fileList, setFileList] = useState<FileType[] | null>();
@@ -88,7 +88,9 @@ const SideBar = () => {
         setFileList(files);
       }
     };
-    getFiles();
+    if (router.pathname.includes('/p/')) {
+      getFiles();
+    }
   }, [userId]);
 
   useEffect(() => {
@@ -156,13 +158,12 @@ const SideBar = () => {
             ))
           : spec &&
             values &&
-            spec?.map((info, idx) => (
+            spec.map((info, idx) => (
               <VegaLiteWrapper key={idx} onClick={() => handlePlotClick(idx)}>
                 <VegaLite spec={info} data={values[idx]} />
               </VegaLiteWrapper>
             ))}
         {router.pathname.includes('/recommend') &&
-          isVisible &&
           spec &&
           values &&
           spec.map((info, idx) => (
