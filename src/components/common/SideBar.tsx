@@ -2,11 +2,11 @@
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { VegaLite, VisualizationSpec } from 'react-vega';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 
 import { getSavedPlots, getUploadHistory } from '../../lib/api/get';
-import { modelDataState, selectedPlotState, userIdState } from '../../lib/state';
+import { isSideBarOpen, modelDataState, selectedPlotState, userIdState } from '../../lib/state';
 import { PlotType, PlotDataType, FileType } from '../../lib/type';
 
 const SideBarWrapper = styled.section`
@@ -72,7 +72,7 @@ const VegaLiteWrapper = styled.div`
 const SideBar = () => {
   const modelData = useRecoilValue(modelDataState);
   const setSelectedPlot = useSetRecoilState(selectedPlotState);
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useRecoilState(isSideBarOpen);
   const [spec, setSpec] = useState<VisualizationSpec[] | null>(null);
   const [values, setValues] = useState<PlotDataType[] | null>(null);
   const [fileList, setFileList] = useState<FileType[] | null>();
@@ -81,17 +81,17 @@ const SideBar = () => {
   const userId = useRecoilValue(userIdState);
   const router = useRouter();
 
-  useEffect(() => {
-    const getFiles = async () => {
-      if (userId) {
-        const files = await getUploadHistory(userId);
-        setFileList(files);
-      }
-    };
-    if (router.pathname.includes('/p/')) {
-      getFiles();
-    }
-  }, [userId]);
+  // useEffect(() => {
+  //   const getFiles = async () => {
+  //     if (userId) {
+  //       const files = await getUploadHistory(userId);
+  //       setFileList(files.history);
+  //     }
+  //   };
+  //   if (router.pathname.includes('/p/')) {
+  //     getFiles();
+  //   }
+  // }, [isVisible]);
 
   useEffect(() => {
     const tempSpec: VisualizationSpec[] = [];
@@ -150,7 +150,7 @@ const SideBar = () => {
         <img src='/assets/icons/FoldArrow.svg' />
       </IconWrapper>
       <DataWrapper>
-        {router.pathname.includes('/p/') && fileList && !fileId
+        {/* {router.pathname.includes('/p/') && fileList && !fileId
           ? fileList.map((file: FileType) => (
               <OptionWrapper key={file.id} onClick={() => handleFileClick(file.id)}>
                 {file.name}
@@ -162,9 +162,8 @@ const SideBar = () => {
               <VegaLiteWrapper key={idx} onClick={() => handlePlotClick(idx)}>
                 <VegaLite spec={info} data={values[idx]} />
               </VegaLiteWrapper>
-            ))}
-        {router.pathname.includes('/recommend') &&
-          spec &&
+            ))} */}
+        {spec &&
           values &&
           spec.map((info, idx) => (
             <VegaLiteWrapper key={idx} onClick={() => handlePlotClick(idx)}>

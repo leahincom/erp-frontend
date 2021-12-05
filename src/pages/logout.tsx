@@ -2,15 +2,20 @@ import { NextPageContext } from 'next';
 import cookies from 'next-cookies';
 import Router from 'next/router';
 import { useEffect } from 'react';
+import { useSetRecoilState } from 'recoil';
 
 import { logout } from '../lib/api/post';
+import { userIdState } from '../lib/state';
 
 const LogoutPage = () => {
+  const setUserId = useSetRecoilState(userIdState);
+
   useEffect(() => {
     const logoutOnServer = async () => {
       const router = Router;
       try {
         await logout();
+        setUserId(null);
         router.push('/login');
       } catch (err) {
         console.log(err);

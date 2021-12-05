@@ -21,3 +21,8 @@ export const selectedPlotState = atom<PlotType | null>({
   key: 'selectedPlot',
   default: null,
 });
+
+export const isSideBarOpen = atom<boolean>({
+  key: 'isSideBarOpen',
+  default: false,
+});

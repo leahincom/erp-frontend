@@ -1,11 +1,13 @@
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 
 import { usePrevious } from '../../hooks';
 import { deleteImage } from '../../lib/api/delete';
 import { updatePage } from '../../lib/api/put';
+import { isSideBarOpen, selectedPlotState } from '../../lib/state';
 import { PageProps } from '../../pages';
 import objectId from '../../utils/objectId';
 import setCaretToEnd from '../../utils/setCaretToEnd';
@@ -58,6 +60,8 @@ const EditablePage = ({ pid: id, blocks: fetchedBlocks, err }: PageProps) => {
   const router = useRouter();
   const [blocks, setBlocks] = useState(fetchedBlocks);
   const [currentBlockId, setCurrentBlockId] = useState();
+  const setIsVisible = useSetRecoilState(isSideBarOpen);
+  const selectedPlot = useRecoilValue(selectedPlotState);
 
   const prevBlocks = usePrevious(blocks);
 
@@ -179,6 +183,8 @@ const EditablePage = ({ pid: id, blocks: fetchedBlocks, err }: PageProps) => {
                     addBlock={addBlockHandler}
                     deleteBlock={deleteBlockHandler}
                     updateBlock={updateBlockHandler}
+                    setIsVisible={setIsVisible}
+                    selectedPlot={selectedPlot}
                   />
                 );
               })}
