@@ -5,7 +5,7 @@ import { RecoilRoot } from 'recoil';
 
 import Layout from '../components/common/Layout';
 import UserProvider from '../context/UserContext';
-import GlobalStyle from '../styles/GlobalStyle';
+import GlobalStyle from '../styles/globalStyle';
 import 'fontsource-nunito-sans';
 import 'fontsource-roboto';
 
