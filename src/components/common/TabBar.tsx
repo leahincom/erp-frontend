@@ -155,7 +155,7 @@ const TabBar = () => {
           <ButtonBarWrapper>
             <LabelWrapper>
               LOAD
-              <InputWrapper type='file' name='file' onChange={handleChange} onClick={(e) => (e.target.value = '')} />
+              <InputWrapper type='file' name='file' onChange={handleChange} />
             </LabelWrapper>
             <ButtonWrapper onClick={handleClick}>EXAMPLE</ButtonWrapper>
           </ButtonBarWrapper>
