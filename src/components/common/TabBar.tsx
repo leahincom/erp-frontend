@@ -7,6 +7,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
 import { UserStateContext } from '../../context/UserContext';
+import { MODELURL } from '../../lib/api';
 import { loadModelData } from '../../lib/api/get';
 import { uploadData } from '../../lib/api/post';
 import savePlot from '../../lib/api/post/savePlot';
@@ -106,6 +107,13 @@ const TabBar = () => {
     e.target.value = '';
   };
 
+  const handleClick = async () => {
+    const data = await fetch(`${MODELURL}/inference_example`, {
+      method: 'GET',
+    }).then((res) => res.json());
+    setModelData(data.plots);
+  };
+
   const handlePlotSave = async () => {
     fileId && selectedPlot && (await savePlot(fileId, selectedPlot));
   };
@@ -132,7 +140,7 @@ const TabBar = () => {
           </ButtonBarWrapper>
         </>
       )}
-      {router.pathname.includes('/p/') && (
+      {/* {router.pathname.includes('/p/') && (
         <>
           <Divider />
           <ButtonBarWrapper>
@@ -140,8 +148,8 @@ const TabBar = () => {
             <ButtonWrapper onClick={() => router.back()}>Go Back</ButtonWrapper>
           </ButtonBarWrapper>
         </>
-      )}
-      {router.pathname.includes('/recommend') && (
+      )} */}
+      {(router.pathname.includes('/p/') || router.pathname.includes('/recommend')) && (
         <>
           <Divider />
           <ButtonBarWrapper>
@@ -149,7 +157,7 @@ const TabBar = () => {
               LOAD
               <InputWrapper type='file' name='file' onChange={handleChange} onClick={(e) => (e.target.value = '')} />
             </LabelWrapper>
-            {selectedPlot && <ButtonWrapper onClick={handlePlotSave}>SAVE</ButtonWrapper>}
+            <ButtonWrapper onClick={handleClick}>EXAMPLE</ButtonWrapper>
           </ButtonBarWrapper>
         </>
       )}

@@ -238,6 +238,9 @@ class EditableBlock extends React.Component<any, StateType> {
             this.closeTagSelectorMenu();
           });
       } else {
+        if (tag === 'img') {
+          this.props.setIsVisible(true);
+        }
         this.setState({ ...this.state, tag }, () => {
           this.closeTagSelectorMenu();
         });
