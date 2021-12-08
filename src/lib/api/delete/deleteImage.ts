@@ -8,8 +8,6 @@ const deleteImage = async (imageUrl: string) => {
       },
     }).then((res) => res.json());
 
-    console.log('[SUCCESS] DELETE image data');
-
     return data;
   } catch (err) {
     console.log('[FAIL]', err);

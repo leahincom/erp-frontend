@@ -6,8 +6,6 @@ const deletePage = async (pageId: string) => {
       headers: { 'Content-Type': 'application/json' },
     }).then((res) => res.json());
 
-    console.log('[SUCCESS] DELETE page data');
-
     return data;
   } catch (err) {
     console.log('[FAIL]', err);

@@ -1,6 +1,6 @@
 import { NextPageContext } from 'next';
 import cookies from 'next-cookies';
-import Router from 'next/router';
+import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useSetRecoilState } from 'recoil';
 
@@ -9,16 +9,17 @@ import { userIdState } from '../lib/state';
 
 const LogoutPage = () => {
   const setUserId = useSetRecoilState(userIdState);
+  const router = useRouter();
 
   useEffect(() => {
     const logoutOnServer = async () => {
-      const router = Router;
       try {
         await logout();
-        setUserId(null);
-        router.push('/login');
       } catch (err) {
         console.log(err);
+      } finally {
+        setUserId(null);
+        router.push('/login');
       }
     };
     logoutOnServer();
@@ -28,12 +29,16 @@ const LogoutPage = () => {
 };
 
 export const getServerSideProps = async (context: NextPageContext) => {
+  // backend 에서 res.cookie("token", token, ...) 으로 설정한 cookie
   const { token } = cookies(context);
-  const res = context.res;
 
   if (!token) {
-    res?.writeHead(302, { Location: `/login` });
-    res?.end();
+    return {
+      redirect: {
+        destination: '/login',
+        statusCode: 302,
+      },
+    };
   }
 
   return { props: {} };

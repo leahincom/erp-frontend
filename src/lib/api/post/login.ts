@@ -13,7 +13,6 @@ const login = async (formData: FormType) => {
       }),
     }).then((res) => res.json());
 
-    console.log('[SUCCESS] LOGIN', data);
     return data;
   } catch (err) {
     console.log('[FAIL]', err);

@@ -8,8 +8,6 @@ const getPage = async (headers: Headers, id: string | string[] | undefined) => {
       headers,
     }).then((res) => res.json());
 
-    console.log('[SUCCESS] GET page data', data);
-
     return data;
   } catch (err) {
     console.log('[FAIL]', err);

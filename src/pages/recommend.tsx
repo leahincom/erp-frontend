@@ -25,21 +25,4 @@ const Recommendation = ({ pid, blocks, err }: PageProps) => {
   );
 };
 
-export const getServerSideProps = async (context: NextPageContext) => {
-  const { token } = cookies(context);
-  const res = context.res;
-  const req = context.req;
-
-  if (!token) {
-    res?.writeHead(302, { Location: `/login` });
-    res?.end();
-  }
-
-  const headers = new Headers();
-  headers.append('Content-Type', 'application/json');
-  req && req.headers && req.headers.cookie && headers.append('Cookie', req.headers.cookie);
-
-  return { props: {} };
-};
-
 export default Recommendation;

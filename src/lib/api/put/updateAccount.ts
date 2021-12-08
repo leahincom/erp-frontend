@@ -14,8 +14,6 @@ const updateAccount = async (formData: FormType) => {
       }),
     }).then((res) => res.json());
 
-    console.log('[SUCCESS] PUT account data');
-
     return data;
   } catch (err) {
     console.log('[FAIL]', err);

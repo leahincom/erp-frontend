@@ -7,8 +7,6 @@ const getAccount = async (headers: Headers) => {
       headers,
     }).then((res) => res.json());
 
-    console.log('[SUCCESS] GET account data', data);
-
     return data;
   } catch (err) {
     console.log('[FAIL]', err);

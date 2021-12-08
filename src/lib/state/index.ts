@@ -1,6 +1,6 @@
 import { atom, selector } from 'recoil';
 
-import { PlotType } from './type';
+import { PlotType } from '../type';
 
 export const loginState = atom<boolean>({
   key: 'login',
