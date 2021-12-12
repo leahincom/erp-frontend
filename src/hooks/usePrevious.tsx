@@ -1,6 +1,6 @@
 import { useRef, useEffect } from 'react';
 
-import { BlockType } from '../lib/type';
+import { BlockType } from '../lib/type/type';
 
 const usePrevious = (value: BlockType[]) => {
   const ref = useRef<BlockType[]>([]);

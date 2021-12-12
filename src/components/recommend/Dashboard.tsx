@@ -3,7 +3,7 @@ import { VegaLite } from 'react-vega';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
-import { selectedPlotState } from '../../lib/state';
+import { selectedPlotState } from '../../lib/state/atom';
 
 const DashboardWrapper = styled.div`
   display: flex;

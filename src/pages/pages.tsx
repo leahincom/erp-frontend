@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import Card from '../components/common/Card';
 import Notice from '../components/common/Notice';
 import { getPage, getPages } from '../lib/api/get';
-import { PageType, DataType } from '../lib/type';
+import { PageType, DataType } from '../lib/type/type';
 
 const PagesWrapper = styled.section`
   display: flex;

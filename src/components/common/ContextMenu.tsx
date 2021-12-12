@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import styled from 'styled-components';
 
 import { useOnClickOutside } from '../../hooks/';
-import { ItemType, PositionType } from '../../lib/type';
+import { ItemType, PositionType } from '../../lib/type/type';
 
 const MenuBarWrapper = styled.div<{ ref: any }>`
   display: flex;
@@ -53,11 +53,6 @@ const ItemWrapper = styled.button`
     border-bottom-left-radius: 0.5rem;
     border-bottom-right-radius: 0.5rem;
   }
-`;
-
-const SelectedTagWrapper = styled.div`
-  border-radius: 0.5rem;
-  background: var(--tertiary);
 `;
 
 interface ContextMenuProps {

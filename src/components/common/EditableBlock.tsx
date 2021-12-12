@@ -5,19 +5,13 @@ import ContentEditable from 'react-contenteditable';
 import { VegaLite } from 'react-vega';
 
 import { uploadImage } from '../../lib/api/post';
-import { StateType } from '../../lib/type';
+import { PlaceholderProps, StateType } from '../../lib/type/type';
 import { setCaretToEnd, getCaretCoordinates, getSelection } from '../../utils/';
 
 import ActionMenu from './ActionMenu';
 import TagSelectorMenu from './TagSelectorMenu';
 
 const CMD_KEY = '/';
-
-type PlaceholderProps = {
-  block: HTMLElement;
-  position: number;
-  content: string;
-};
 
 class EditableBlock extends React.Component<any, StateType> {
   contentEditable: RefObject<HTMLDivElement>;
@@ -287,7 +281,7 @@ class EditableBlock extends React.Component<any, StateType> {
   calculateActionMenuPosition(parent: HTMLElement, initiator?: string) {
     switch (initiator) {
       case 'TEXT_SELECTION':
-        const { x: endX, y: endY } = getCaretCoordinates(false);
+        const { x: endX } = getCaretCoordinates(false);
         const { x: startX, y: startY } = getCaretCoordinates(true);
         const middleX = startX + (endX - startX) / 2;
         return { x: middleX, y: startY };

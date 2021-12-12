@@ -5,27 +5,16 @@ import { useEffect } from 'react';
 import { useSetRecoilState } from 'recoil';
 
 import { logout } from '../lib/api/post';
-import { userIdState } from '../lib/state';
+import { userIdState } from '../lib/state/atom';
 
 const LogoutPage = () => {
   const setUserId = useSetRecoilState(userIdState);
   const router = useRouter();
 
   useEffect(() => {
-    const logoutOnServer = async () => {
-      try {
-        await logout();
-      } catch (err) {
-        console.log(err);
-      } finally {
-        setUserId(null);
-        router.push('/login');
-      }
-    };
-    logoutOnServer();
+    setUserId(null);
+    router.push('/login');
   });
-
-  return null;
 };
 
 export const getServerSideProps = async (context: NextPageContext) => {
@@ -39,6 +28,12 @@ export const getServerSideProps = async (context: NextPageContext) => {
         statusCode: 302,
       },
     };
+  }
+
+  try {
+    await logout();
+  } catch (err) {
+    console.log(err);
   }
 
   return { props: {} };

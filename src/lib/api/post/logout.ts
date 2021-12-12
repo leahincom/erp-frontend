@@ -1,13 +1,9 @@
-import { BASEURL } from '..';
+import user, { BASEURL } from '../user';
+
 const logout = async () => {
   try {
-    const data = await fetch(`${BASEURL}/users/logout`, {
-      method: 'POST',
-      credentials: 'include',
-      headers: { 'Content-Type': 'application/json' },
-    });
-
-    return data;
+    const logout = await user.post(`${BASEURL}/users/logout`);
+    return logout.data;
   } catch (err) {
     console.log('[FAIL]', err);
   }

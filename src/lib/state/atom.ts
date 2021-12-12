@@ -1,11 +1,6 @@
-import { atom, selector } from 'recoil';
+import { atom } from 'recoil';
 
-import { PlotType } from '../type';
-
-export const loginState = atom<boolean>({
-  key: 'login',
-  default: false,
-});
+import { PlotType } from '../type/type';
 
 export const userIdState = atom<string | null>({
   key: 'userId',
@@ -22,7 +17,7 @@ export const selectedPlotState = atom<PlotType | null>({
   default: null,
 });
 
-export const isSideBarOpen = atom<boolean>({
-  key: 'isSideBarOpen',
+export const isSideBarOpenState = atom<boolean>({
+  key: 'isSideBarOpenState',
   default: false,
 });

@@ -7,7 +7,7 @@ import Input from '../components/common/Input';
 import Notice from '../components/common/Notice';
 import { getAccount } from '../lib/api/get';
 import { updateAccount } from '../lib/api/put';
-import { UserType } from '../lib/type';
+import { UserType } from '../lib/type/type';
 
 const AccountWrapper = styled.section`
   display: flex;

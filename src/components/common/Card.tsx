@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import { deletePage } from '../../lib/api/delete';
-import { BlockType } from '../../lib/type';
+import { BlockType } from '../../lib/type/type';
 
 import ContextMenu from './ContextMenu';
 

@@ -1,13 +1,9 @@
-import { BASEURL } from '..';
+import user from '../user';
+
 const uploadImage = async (pageId: string, formData: FormData) => {
   try {
-    const data = await fetch(`${BASEURL}/pages/images?pageId=${pageId}`, {
-      method: 'POST',
-      credentials: 'include',
-      body: formData,
-    }).then((res) => res.json());
-
-    return data;
+    const image = await user.post(`/pages/images?pageId=${pageId}`, formData);
+    return image.data;
   } catch (err) {
     console.log('[FAIL]', err);
   }

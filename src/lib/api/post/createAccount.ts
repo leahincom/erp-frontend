@@ -1,20 +1,14 @@
-import { BASEURL } from '..';
-import { FormType } from '../../type';
+import { FormType } from '../../type/type';
+import user from '../user';
 
 const createAccount = async (formData: FormType) => {
   try {
-    const data = await fetch(`${BASEURL}/users/signup`, {
-      method: 'POST',
-      credentials: 'include',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        name: formData.name,
-        email: formData.email,
-        password: formData.password,
-      }),
-    }).then((res) => res.json());
-
-    return data;
+    const account = await user.post(`/users/signup`, {
+      name: formData.name,
+      email: formData.email,
+      password: formData.password,
+    });
+    return account.data;
   } catch (err) {
     console.log('[FAIL]', err);
   }

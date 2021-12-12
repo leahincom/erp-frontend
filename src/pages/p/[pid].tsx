@@ -3,19 +3,17 @@ import React, { useEffect } from 'react';
 import { resetServerContext } from 'react-beautiful-dnd';
 import { useSetRecoilState } from 'recoil';
 
-import { PageProps } from '..';
 import EditablePage from '../../components/common/EditablePage';
 import SideBar from '../../components/common/SideBar';
 import { getPage } from '../../lib/api/get';
-import { isSideBarOpen, selectedPlotState } from '../../lib/state';
+import { isSideBarOpenState } from '../../lib/state/atom';
+import { PageProps } from '../../lib/type/props';
 
 const Page = ({ pid, blocks, err }: PageProps) => {
-  const setIsVisible = useSetRecoilState(isSideBarOpen);
-  const setSelectedPlot = useSetRecoilState(selectedPlotState);
+  const setIsVisible = useSetRecoilState(isSideBarOpenState);
 
   useEffect(() => {
     setIsVisible(false);
-    setSelectedPlot(null);
   }, []);
 
   return (

@@ -6,11 +6,11 @@ import React, { useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
-import { MODELURL } from '../../lib/api';
 import { loadModelData } from '../../lib/api/get';
+import getExamples from '../../lib/api/get/getExamples';
 import { uploadData } from '../../lib/api/post';
 import savePlot from '../../lib/api/post/savePlot';
-import { modelDataState, selectedPlotState, userIdState } from '../../lib/state';
+import { modelDataState, selectedPlotState, userIdState } from '../../lib/state/atom';
 
 const TabBarWrapper = styled.div`
   display: flex;
@@ -105,9 +105,7 @@ const TabBar = () => {
   };
 
   const handleClick = async () => {
-    const examples = await fetch(`${MODELURL}/inference_example`, {
-      method: 'GET',
-    }).then((res) => res.json());
+    const examples = await getExamples();
     setModelData(examples.plots);
   };
 

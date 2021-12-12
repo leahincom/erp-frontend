@@ -2,6 +2,8 @@ import Head from 'next/head';
 import Link from 'next/link';
 import styled from 'styled-components';
 
+import { ChildrenType } from '../../lib/type/type';
+
 import TabBar from './TabBar';
 
 const HeaderWrapper = styled.header`
@@ -32,10 +34,6 @@ const ContentWrapper = styled.main`
   height: 100%;
   overflow-y: hidden;
 `;
-
-type ChildrenType = {
-  children: any;
-};
 
 const Layout = ({ children }: ChildrenType) => {
   return (

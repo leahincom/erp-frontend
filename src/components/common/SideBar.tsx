@@ -6,8 +6,8 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 
 import { getSavedPlots, getUploadHistory } from '../../lib/api/get';
-import { isSideBarOpen, modelDataState, selectedPlotState, userIdState } from '../../lib/state';
-import { PlotType, PlotDataType, FileType } from '../../lib/type';
+import { isSideBarOpenState, modelDataState, selectedPlotState, userIdState } from '../../lib/state/atom';
+import { PlotType, PlotDataType, FileType } from '../../lib/type/type';
 
 const SideBarWrapper = styled.section`
   display: flex;
@@ -77,7 +77,7 @@ const VegaLiteWrapper = styled.div`
 const SideBar = () => {
   const modelData = useRecoilValue(modelDataState);
   const setSelectedPlot = useSetRecoilState(selectedPlotState);
-  const [isVisible, setIsVisible] = useRecoilState(isSideBarOpen);
+  const [isVisible, setIsVisible] = useRecoilState(isSideBarOpenState);
   const [spec, setSpec] = useState<VisualizationSpec[] | null>(null);
   const [values, setValues] = useState<PlotDataType[] | null>(null);
   const [fileList, setFileList] = useState<[string[]] | null>(); // history: [[file_id, file_name], ...]
@@ -152,7 +152,7 @@ const SideBar = () => {
   return (
     <SideBarWrapper className={[!isVisible && 'shrink'].join(' ')}>
       <IconWrapper onClick={() => setIsVisible(!isVisible)}>
-        <img src='/assets/icons/FoldArrow.svg' className='arrow' />
+        <img src='/assets/icons/FoldArrow.svg' className='arrow' alt='arrowButton' />
       </IconWrapper>
       <DataWrapper>
         {router.pathname.includes('/p/') && fileList && !fileId

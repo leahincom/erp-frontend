@@ -105,3 +105,13 @@ export type FileType = {
   id?: string;
   name?: string;
 };
+
+export type PlaceholderProps = {
+  block: HTMLElement;
+  position: number;
+  content: string;
+};
+
+export type ChildrenType = {
+  children: any;
+};

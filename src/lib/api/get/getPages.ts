@@ -1,13 +1,11 @@
-import { BASEURL } from '..';
+import user from '../user';
+
 const getPages = async (headers: Headers) => {
   try {
-    const data = await fetch(`${BASEURL}/pages`, {
-      method: 'GET',
-      credentials: 'include',
+    const pages = await user.get(`/pages`, {
       headers,
-    }).then((res) => res.json());
-
-    return data;
+    });
+    return pages.data;
   } catch (err) {
     console.log('[FAIL]', err);
   }

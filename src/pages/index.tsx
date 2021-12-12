@@ -2,14 +2,8 @@ import type { NextPageContext } from 'next';
 
 import EditablePage from '../components/common/EditablePage';
 import { postPages } from '../lib/api/post';
-import { BlockType } from '../lib/type';
+import { PageProps } from '../lib/type/props';
 import objectId from '../utils/objectId';
-
-export interface PageProps {
-  pid: string;
-  blocks: BlockType[];
-  err: Error;
-}
 
 const IndexPage = ({ pid, blocks, err }: PageProps) => {
   return <EditablePage pid={pid} blocks={blocks} err={err} />;

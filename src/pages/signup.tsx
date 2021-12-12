@@ -8,8 +8,8 @@ import styled from 'styled-components';
 import Input from '../components/common/Input';
 import Notice from '../components/common/Notice';
 import { createAccount } from '../lib/api/post';
-import { userIdState } from '../lib/state';
-import { FormType } from '../lib/type';
+import { userIdState } from '../lib/state/atom';
+import { FormType } from '../lib/type/type';
 
 const SignupWrapper = styled.section`
   display: flex;
