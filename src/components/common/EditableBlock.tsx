@@ -177,7 +177,7 @@ class EditableBlock extends React.Component<any, StateType> {
     });
 
     setTimeout(() => {
-      document.addEventListener('click', this.closeActionMenu, false);
+      document.addEventListener('click', this.closeActionMenu);
     }, 100);
   }
 
@@ -187,7 +187,7 @@ class EditableBlock extends React.Component<any, StateType> {
       actionMenuPosition: { x: null, y: null },
       actionMenuOpen: false,
     });
-    document.removeEventListener('click', this.closeActionMenu, false);
+    document.removeEventListener('click', this.closeActionMenu);
   }
 
   openTagSelectorMenu(trigger?: string) {
@@ -197,7 +197,7 @@ class EditableBlock extends React.Component<any, StateType> {
       tagSelectorMenuPosition: { x, y },
       tagSelectorMenuOpen: true,
     });
-    document.addEventListener('click', this.closeTagSelectorMenu, false);
+    document.addEventListener('click', this.closeTagSelectorMenu);
   }
 
   closeTagSelectorMenu() {
@@ -207,7 +207,7 @@ class EditableBlock extends React.Component<any, StateType> {
       tagSelectorMenuPosition: { x: null, y: null },
       tagSelectorMenuOpen: false,
     });
-    document.removeEventListener('click', this.closeTagSelectorMenu, false);
+    document.removeEventListener('click', this.closeTagSelectorMenu);
   }
 
   handleTagSelection(tag: string) {
@@ -387,8 +387,8 @@ class EditableBlock extends React.Component<any, StateType> {
                     onChange={this.handleImageUpload}
                     ref={(ref) => (this.fileInput = ref)}
                     hidden
-                  /> */}
-                  {/* {!this.state.imageUrl && (
+                  />
+                  {!this.state.imageUrl && (
                     <label htmlFor={`${this.props.id}_fileInput`} className='fileInputLabel'>
                       No Image Selected. Click To Select.
                     </label>

@@ -5,7 +5,7 @@ const setCaretToEnd = (element: HTMLElement) => {
   range.collapse(false);
   selection?.removeAllRanges();
   selection?.addRange(range);
-  (element as HTMLElement).focus();
+  element.focus();
 };
 
 export default setCaretToEnd;
